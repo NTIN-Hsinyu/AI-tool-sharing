@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>入院評估 - 病人角色扮演劇本隨機拉霸機</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #faf6f0; /* 舞台劇本風底色 */
+        }
+        /* 拉霸滾動動畫 */
+        @keyframes slotScroll {
+            0% { transform: translateY(-10px); opacity: 0.3; }
+            50% { transform: translateY(5px); opacity: 0.7; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .slot-animate {
+            animation: slotScroll 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+        /* 劇本卡片樣式 */
+        .script-card {
+            transition: all 0.2s ease;
+            border-left: 5px solid #d97706; /* 琥珀橘 */
+        }
+        .script-card:hover {
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between text-gray-800">
+
+    <!-- 頂部導航 -->
+    <header class="bg-gradient-to-r from-amber-800 to-amber-950 text-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <div class="bg-amber-100 text-amber-900 p-2.5 rounded-lg shadow-inner">
+                    <i class="fa-solid fa-masks-theater fa-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-black tracking-wider">病人角色扮演劇本產生器</h1>
+                    <p class="text-xs sm:text-sm text-amber-200 mt-0.5">OSCE 入院評估模擬演練（只由護理師主導問答）</p>
+                </div>
+            </div>
+            <div>
+                <button id="btn-tutorial" class="bg-amber-900/50 hover:bg-amber-900 text-amber-100 px-4 py-2 rounded-lg text-sm font-semibold transition border border-amber-700/50 flex items-center gap-1">
+                    <i class="fa-solid fa-circle-info"></i> 演員規則
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main class="container mx-auto px-4 py-6 flex-grow max-w-5xl">
+        
+        <!-- 控制台 -->
+        <div class="bg-white rounded-2xl shadow-sm border border-amber-100 p-6 mb-6 text-center">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p class="text-base sm:text-lg text-amber-950 font-bold text-left">
+                    🎬 <b>點擊按鈕，抽取你的專屬病人劇本！</b>
+                </p>
+                <button id="btn-spin" class="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-extrabold text-base sm:text-lg px-8 py-3.5 rounded-xl shadow-md active:scale-95 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-shuffle"></i>
+                    <span>隨機抽新劇本</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 劇本主體 -->
+        <div id="script-sheet" class="bg-white rounded-2xl shadow-lg border border-amber-900/10 overflow-hidden">
+            <!-- 劇本標頭 -->
+            <div class="bg-slate-900 text-white p-4.5 flex justify-between items-center border-b-2 border-amber-500">
+                <div class="flex items-center gap-2">
+                    <span class="text-base font-extrabold tracking-wider text-amber-400 font-mono"><i class="fa-solid fa-clapperboard mr-1.5"></i>ACTOR SCRIPT</span>
+                    <!-- 劇本嚴重度標籤 -->
+                    <span id="slot-severity-badge" class="px-3 py-1 text-xs sm:text-sm font-black rounded-full">載入中...</span>
+                </div>
+                <span class="text-xs sm:text-sm text-slate-400">病歷對應號：<span id="field-chart-no" class="font-mono font-bold text-white">------</span></span>
+            </div>
+
+            <div class="p-6 sm:p-8 space-y-8">
+                
+                <!-- 一、演員基本人設 -->
+                <section>
+                    <div class="flex items-center gap-2 border-b-2 border-amber-500/30 pb-2 mb-4">
+                        <span class="bg-amber-600 text-white text-sm w-6 h-6 rounded-full flex items-center justify-center font-bold">1</span>
+                        <h3 class="text-base sm:text-lg font-black text-amber-950">演員基本人設 <span class="text-xs sm:text-sm font-normal text-slate-500">（護理師詢問基本資料時，請照此回答）</span></h3>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-5 text-sm sm:text-base">
+                        <div class="script-card bg-amber-50/20 p-4 rounded-lg">
+                            <span class="text-xs sm:text-sm text-slate-500 font-bold block mb-1">姓名 / 性別 / 年齡</span>
+                            <div id="slot-personal" class="font-black text-lg sm:text-xl text-slate-800">載入中...</div>
+                        </div>
+                        <div class="script-card bg-amber-50/20 p-4 rounded-lg">
+                            <span class="text-xs sm:text-sm text-slate-500 font-bold block mb-1">出生年月日</span>
+                            <div id="slot-birth" class="font-black text-base sm:text-lg text-slate-800">------</div>
+                        </div>
+                        <div class="script-card bg-amber-50/20 p-4 rounded-lg">
+                            <span class="text-xs sm:text-sm text-slate-500 font-bold block mb-1">職業</span>
+                            <div id="slot-occupation" class="font-bold text-base sm:text-lg text-slate-800">------</div>
+                        </div>
+                        <div class="script-card bg-amber-50/20 p-4 rounded-lg">
+                            <span class="text-xs sm:text-sm text-slate-500 font-bold block mb-1">教育程度 / 婚姻</span>
+                            <div id="slot-edu-marriage" class="font-bold text-base sm:text-lg text-slate-800">------</div>
+                        </div>
+                        <div class="script-card bg-amber-50/20 p-4 rounded-lg col-span-2">
+                            <span class="text-xs sm:text-sm text-slate-500 font-bold block mb-1">溝通語言與風格</span>
+                            <div id="slot-comm-style" class="font-bold text-base sm:text-lg text-slate-800">------</div>
+                        </div>
+                        <!-- 疼痛評估 (0-10分) 卡片 -->
+                        <div class="script-card bg-red-50/50 p-4 rounded-lg col-span-2 border-l-red-500">
+                            <span class="text-xs sm:text-sm text-red-800 font-black block mb-1"><i class="fa-solid fa-bed-pulse mr-1"></i> 疼痛自訴評估（對照病歷病程）</span>
+                            <div id="slot-pain" class="text-sm sm:text-base text-slate-800">------</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 二、外在表現與演出指引 -->
+                <section class="bg-orange-50/30 border border-orange-100 p-5 rounded-xl">
+                    <div class="flex items-center gap-2 border-b-2 border-orange-200/50 pb-2 mb-4">
+                        <span class="bg-orange-600 text-white text-sm w-6 h-6 rounded-full flex items-center justify-center font-bold">2</span>
+                        <h3 class="text-base sm:text-lg font-black text-orange-950">外在表現指引 <span class="text-xs sm:text-sm font-extrabold text-red-600">🚨（請保持安靜不主動說話，僅用肢體與表情呈現）</span></h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm sm:text-base">
+                        <div class="bg-white p-4.5 rounded-lg border border-orange-100">
+                            <span class="text-xs sm:text-sm text-orange-800 font-black block mb-1.5"><i class="fa-solid fa-face-grimace mr-1"></i> 面部表情與神情</span>
+                            <div id="script-mood-acting" class="text-base sm:text-lg text-slate-900 leading-relaxed font-medium">------</div>
+                        </div>
+                        <div class="bg-white p-4.5 rounded-lg border border-orange-100">
+                            <span class="text-xs sm:text-sm text-orange-800 font-black block mb-1.5"><i class="fa-solid fa-child-reaching mr-1"></i> 肢體動作與姿勢</span>
+                            <div id="script-body-acting" class="text-base sm:text-lg text-slate-900 leading-relaxed font-medium">------</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 三、被動回答之背景祕密 -->
+                <section class="space-y-6">
+                    <div class="flex items-center gap-2 border-b-2 border-amber-500/30 pb-2 mb-4">
+                        <span class="bg-amber-600 text-white text-sm w-6 h-6 rounded-full flex items-center justify-center font-bold">3</span>
+                        <h3 class="text-base sm:text-lg font-black text-amber-950">隱藏背景祕密 <span class="text-xs sm:text-sm font-normal text-amber-700">（重要！護理師「有主動問到」才能回答）</span></h3>
+                    </div>
+
+                    <!-- 疾病經過與診斷 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="script-card bg-slate-50 p-4 rounded-lg">
+                            <span class="text-xs sm:text-sm text-slate-500 font-black block mb-1.5"><i class="fa-solid fa-stethoscope mr-1"></i> 發病經過（當被問到：「你今天哪裡不舒服？怎麼發生的？」）</span>
+                            <div id="script-present-illness-details" class="text-sm sm:text-base text-slate-700 leading-relaxed font-medium">------</div>
+                        </div>
+                        <div class="script-card bg-slate-50 p-4 rounded-lg border-l-amber-600">
+                            <span class="text-xs sm:text-sm text-slate-500 font-black block mb-1.5"><i class="fa-solid fa-user-tag mr-1"></i> 入院診斷（當被問到：「知道這次為什麼要住院嗎？」）</span>
+                            <div id="slot-diagnosis" class="text-base sm:text-lg font-extrabold text-amber-800">------</div>
+                        </div>
+                    </div>
+
+                    <!-- 家族成員與家族樹健康資料 -->
+                    <div class="script-card bg-teal-50/40 p-5 rounded-xl border-l-teal-600">
+                        <span class="text-xs sm:text-sm text-teal-800 font-black block mb-3"><i class="fa-solid fa-sitemap mr-1"></i> 家庭成員與健康狀況（當被詢問：「家裡有哪些人？大家都健康嗎？跟誰住？」以協助學生畫家族樹）</span>
+                        <div id="slot-family-tree" class="text-sm sm:text-base text-slate-700 space-y-3 leading-relaxed">
+                            <!-- 程式動態填入 -->
+                            載入中...
+                        </div>
+                    </div>
+
+                    <!-- 既往病史、用藥與過敏 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="script-card bg-slate-50 p-4 rounded-lg">
+                            <span class="text-xs sm:text-sm text-slate-500 font-black block mb-1.5"><i class="fa-solid fa-heart-pulse mr-1"></i> 過去病史（當被問到：「以前有過慢性病或開過刀嗎？」）</span>
+                            <div id="slot-past-history" class="text-sm sm:text-base text-slate-700 leading-relaxed">------</div>
+                        </div>
+                        <div class="script-card bg-slate-50 p-4 rounded-lg">
+                            <span class="text-xs sm:text-sm text-slate-500 font-black block mb-1.5"><i class="fa-solid fa-pills mr-1"></i> 長期用藥（當被問到：「平時有固定吃什麼藥嗎？」）</span>
+                            <div id="slot-long-term-med" class="text-sm sm:text-base text-slate-700 leading-relaxed">------</div>
+                        </div>
+                    </div>
+
+                    <!-- 三種過敏史與跌倒史 -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="script-card bg-red-50 p-4 rounded-lg border-l-red-500">
+                            <span class="text-xs sm:text-sm text-red-800 font-black block mb-1.5">藥物過敏史</span>
+                            <div id="slot-allergy-med" class="text-sm text-slate-700 leading-relaxed">------</div>
+                        </div>
+                        <div class="script-card bg-slate-50 p-4 rounded-lg">
+                            <span class="text-xs sm:text-sm text-slate-500 font-black block mb-1.5">食物過敏史</span>
+                            <div id="slot-allergy-food" class="text-sm text-slate-700 leading-relaxed">------</div>
+                        </div>
+                        <div class="script-card bg-slate-50 p-4 rounded-lg">
+                            <span class="text-xs sm:text-sm text-slate-500 font-black block mb-1.5">其他過敏史</span>
+                            <div class="text-sm text-slate-700 leading-relaxed" id="slot-allergy-other">------</div>
+                        </div>
+                        <div class="script-card bg-amber-50/30 p-4 rounded-lg border-l-amber-500">
+                            <span class="text-xs sm:text-sm text-amber-800 font-black block mb-1.5">跌倒史 (一年內)</span>
+                            <div id="slot-fall-history" class="text-sm text-slate-700 leading-relaxed">------</div>
+                        </div>
+                    </div>
+
+                    <!-- 靈性與個人生活史 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div class="script-card bg-purple-50/20 p-4.5 rounded-lg border-l-purple-500">
+                            <span class="text-xs sm:text-sm text-purple-800 font-black block mb-2.5"><i class="fa-solid fa-hands-praying mr-1"></i> 靈性與宗教信仰（當被問到信仰狀況時）</span>
+                            <div id="slot-religion" class="text-sm sm:text-base text-slate-700 leading-relaxed">------</div>
+                        </div>
+
+                        <div class="script-card bg-cyan-50/20 p-4.5 rounded-lg border-l-cyan-500">
+                            <span class="text-xs sm:text-sm text-cyan-800 font-black block mb-2.5"><i class="fa-solid fa-house-user mr-1"></i> 個人生活習慣（當被問到菸/酒/檳榔/睡眠/出國/接觸病患時）</span>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-slate-700">
+                                <div><span class="font-extrabold text-slate-500">抽菸：</span><span id="slot-smoke" class="font-medium">------</span></div>
+                                <div><span class="font-extrabold text-slate-500">喝酒：</span><span id="slot-drink" class="font-medium">------</span></div>
+                                <div><span class="font-extrabold text-slate-500">檳榔：</span><span id="slot-betel" class="font-medium">------</span></div>
+                                <div><span class="font-extrabold text-slate-500">睡眠：</span><span id="slot-sleep" class="font-medium">------</span></div>
+                                <div class="sm:col-span-2"><span class="font-extrabold text-slate-500">出國史：</span><span id="slot-travel" class="font-medium">------</span></div>
+                                <div class="sm:col-span-2"><span class="font-extrabold text-slate-500">接觸史：</span><span id="slot-contact" class="font-medium">------</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 使用說明 Modal -->
+    <div id="modal-tutorial" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-5 shadow-2xl border border-slate-100">
+            <div class="flex justify-between items-start mb-3">
+                <h3 class="text-md font-bold text-slate-900 flex items-center gap-1.5">
+                    <i class="fa-solid fa-masks-theater text-amber-600"></i>
+                    演員對戲守則
+                </h3>
+                <button id="btn-close-modal" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="space-y-3 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                <div class="bg-amber-50 p-3 rounded-lg border border-amber-100 space-y-1.5 text-amber-950">
+                    <p class="font-bold">🤐 1. 嚴禁開場主動抱怨</p>
+                    <p>護理師同學沒走過來、沒開口問好，你就<b>絕對不說話</b>。只用「面部表情」與「肢體動作」來引起注意。</p>
+                    
+                    <p class="font-bold">🗣️ 2. 有問才答，沒問裝傻</p>
+                    <p>「隱藏身世祕密」與「家族成員」的欄位是考題。同學沒問，就當作不知道，千萬不要自己全部招出來。</p>
+
+                    <p class="font-bold">🌳 3. 常規評估與急症演練</p>
+                    <p>依照劇本最上方亮起的<b>「嚴重度分級標籤」</b>來微調你的精神狀態。輕症請保持意識清晰、對答平順；抽到少數的中重症時，請配合劇本演繹痛苦或喘息症狀，考驗同學的臨場反應！</p>
+                </div>
+            </div>
+            <div class="mt-4 text-right">
+                <button id="btn-close-modal-ok" class="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-4 py-2 rounded-lg text-xs sm:text-sm transition font-bold">
+                    我懂了！
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 腳部 -->
+    <footer class="bg-slate-900 text-slate-500 text-center py-5 text-xs border-t border-slate-800">
+        <div class="container mx-auto px-4 space-y-1.5">
+            <p>© 2026 護理入院評估隨機拉霸機 - OSCE 模擬病人劇本專用版</p>
+            <p class="text-slate-600 font-medium">國立臺南護理專科學校 趙心瑜助理教授 設計製作</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- 隨機基本人設資料庫 ---
+        const firstNames = ["陳", "林", "黃", "張", "李", "王", "吳", "劉", "蔡", "洪", "楊", "趙", "許", "郭", "曾"];
+        const lastNamesMale = ["志明", "冠宇", "建國", "俊傑", "信宏", "家豪", "博宇", "承恩", "哲宇", "文雄", "金生", "天賜"];
+        const lastNamesFemale = ["美玲", "雅婷", "淑芬", "麗華", "秀英", "佩珊", "欣妤", "雅雯", "詠晴", "美惠", "秋香", "雪嬌"];
+        
+        const occupations = ["軍人", "公務人員", "教師", "商業人士", "工廠技術員", "自由業者", "家庭主婦", "學生", "農夫", "漁民", "退休人員", "無業"];
+        const educations = ["不識字", "小學", "國中", "高中職", "專科", "大學", "碩士", "博士"];
+        const marriages = ["未婚", "已婚", "離婚", "分居", "喪偶", "同居"];
+
+        const languageStyles = [
+            "台語流利，國語不太行（講話夾雜台語單字，口音重）",
+            "國語流利，偶爾冒出一兩句台語",
+            "標準國語，講話非常斯文但聲音很小",
+            "客家口音，國語台語夾雜",
+            "外語口音（可模仿新住民、外語老師，中文有些許文法錯誤）",
+            "南部腔國語，講話很豪爽、速度快",
+            "聲音沙啞，講兩句就咳嗽，講話很吃力"
+        ];
+
+        // --- 輕症案例庫 (90% 出現率) ---
+        const mildCases = [
+            {
+                diagnosis: "急性腸胃炎 (Acute Gastroenteritis)",
+                moodActing: "略顯疲憊，說話時神情平穩，偶爾會用手輕輕揉肚子，但整體精神尚可。",
+                bodyActing: "端坐在床邊或椅子上，回答問題時條理分明。肚子絞痛發生時（可每隔一兩分鐘演一次），會微微咬牙、身體稍微往前傾，過幾秒鐘又恢復正常。",
+                presentIllness: "昨天晚上去夜市吃了生魚片和冰品，今天凌晨開始肚子一陣陣絞痛，拉了4次水樣大便，還覺得有點噁心。雖然沒有吐，但整個人拉到沒力氣、口很渴。今天早上來看門診，醫生說有一點輕微脫水，建議我住院打點滴補充水分，並讓腸胃休息觀察一下。",
+                pastHistory: "無特殊過去病史，沒有高血壓或糖尿病。",
+                longTermMeds: "平時沒有服用任何長期藥物。",
+                fallHistory: "這一年內沒有跌倒過。",
+                painCurrent: 3,
+                painTolerable: 5,
+                painLocation: "肚臍周圍及下腹部",
+                painNature: "陣發性的絞痛與悶脹感，拉完肚子會稍微緩解一點"
+            },
+            {
+                diagnosis: "急性尿路感染 (Acute Urinary Tract Infection, UTI)",
+                moodActing: "神情稍微顯得有些尷尬，說話語氣溫和，但不時會看病房洗手間，表現出一種微幅焦慮、頻尿的動作感覺。",
+                bodyActing: "雙手安放在大腿上，回答問題時身體偶爾會輕微扭動、坐立難安，表現出下腹部一直酸脹卡卡的難受感。行動自如。",
+                presentIllness: "這三天上廁所時，尿道口都覺得熱熱、刺刺痛痛的，而且一直想跑廁所，但每次去都只能尿出一點點，感覺沒尿乾淨。昨天晚上開始，肚子最下面（恥骨附近）開始覺得酸酸脹脹的，人也有點微燒（37.6度）。今天來看門診，驗尿後醫生說發炎得蠻明顯的，建議住院打點滴抗生素，並交代要多喝水觀察。",
+                pastHistory: "兩年前曾有過一次類似的尿道炎，吃藥後就好了。無其他慢性病史。",
+                longTermMeds: "無長期規律服藥。",
+                fallHistory: "這一年內沒有跌倒過。",
+                painCurrent: 2,
+                painTolerable: 6,
+                painLocation: "下腹部（恥骨上方）以及尿道口",
+                painNature: "下腹部呈持續性酸脹隱痛；排尿時尿道口會有約 5 分的針刺般灼熱痛"
+            },
+            {
+                diagnosis: "左小腿輕度蜂窩性組織炎 (Mild Cellulitis of Left Lower Limb)",
+                moodActing: "精神良好，說話聲音宏亮，神情與常人無異。只有在護理師要檢查或觸碰你左腳傷口時，才會流露出緊張和怕痛的表情。",
+                bodyActing: "坐在床上，左腳稍微用小枕頭墊高。左小腿前側有約拳頭大小的紅腫。你可以自行上下床，但走路時左腳不敢用力，會稍微跛腳。",
+                presentIllness: "三天前在田裡除草時，左邊小腿不小心被樹枝刮傷，當時覺得只是小破皮就沒去管。昨天開始發現傷口周圍開始變紅、變腫，摸起來熱熱痛痛的，走路也開始會痛。今天早上紅腫變大了一圈，所以來看門診，醫生診斷是輕度蜂窩性組織炎，建議住院吊抗生素點滴幾天，免得發炎擴散到全身。",
+                pastHistory: "無慢性病或開刀史。",
+                longTermMeds: "無長期用藥。",
+                fallHistory: "這一年內沒有跌倒過。",
+                painCurrent: 3,
+                painTolerable: 6,
+                painLocation: "左小腿前側傷口周圍",
+                painNature: "持續性的腫脹鈍痛與溫熱感，用手按壓或走路著地時，會變成約 5 分的緊繃刺痛"
+            },
+            {
+                diagnosis: "右側腹股溝疝氣 (Right Inguinal Hernia - Elective Surgery)",
+                moodActing: "神情非常輕鬆自在，完全沒有任何生病的病容，態度十分親切、配合度高，能和護理師微笑對話。",
+                bodyActing: "行動完全自如，活動不受限，能在病房內自由走動。回答時神態自若。",
+                presentIllness: "這半年來，每次站久了或搬重物、用力咳嗽時，右邊肚子下面（鼠蹊部）就會鼓起一個小腫塊，大約雞蛋大小。躺下來休息一陣子，腫塊又會自己縮回去。雖然平常不太會痛，但總覺得下腹部重重脹脹的。上週看門診，醫師建議安排常規的手術（腹股溝疝氣修補術）來修復，所以今天按計畫辦理住院，明天早上準備開刀。",
+                pastHistory: "除了疝氣外，身體一直很健康，無其他開刀史。",
+                longTermMeds: "無長期服用藥物。",
+                fallHistory: "這一年內沒有跌倒過。",
+                painCurrent: 1,
+                painTolerable: 7,
+                painLocation: "右側腹股溝 (鼠蹊部)",
+                painNature: "輕微的墜脹與牽扯感，站立搬重物時稍明顯（約3分），躺下時完全不痛"
+            },
+            {
+                diagnosis: "急性扁桃腺炎化膿 (Acute Tonsillitis with Suppuration)",
+                moodActing: "神情顯得疲憊、沒精神。因為喉嚨極度疼痛，說話時聲音沙啞，每次講話前都會先做一個吞嚥口水、眉頭緊皺的痛苦表情，說話速度很慢、字句簡短。",
+                bodyActing: "靠坐在病床上，手邊放著水杯. 呼吸順暢，無呼吸困難或喘息，但身體看起來稍微虛弱、無力。",
+                presentIllness: "前天開始覺得喉嚨非常痛，連吞口水都像刀在割。昨天開始發燒到 38.4 度，全身酸痛、胃口差，根本吃不下任何東西，只喝了一點水。今天門診醫生檢查說我扁桃腺化膿了，因為喉嚨痛到無法進食、稍微有點脫水，所以建議我住院打點滴補充水分，並用靜脈注射抗生素與止痛藥治療。",
+                pastHistory: "無其他重大疾病或慢性病史。",
+                longTermMeds: "無規律服用藥物。",
+                fallHistory: "這一年內沒有跌倒過。",
+                painCurrent: 4,
+                painTolerable: 5,
+                painLocation: "喉嚨深處、扁桃腺兩側",
+                painNature: "持續性的灼熱疼痛，吞嚥任何東西或說話時，會呈 7 分的刀割般劇烈刺痛"
+            },
+            {
+                diagnosis: "右眼老年性白內障 (Senile Cataract of Right Eye - Elective Surgery)",
+                moodActing: "神采奕奕，完全沒有生病的不適感，非常健談。只有看人或看東西時，會稍微瞇起右眼或轉頭用左眼看，顯得右眼視力較差。",
+                bodyActing: "行動可自理，但走路時步伐會放得比較緩慢、謹慎（因為單眼模糊，深度感跟立體感稍差）。",
+                presentIllness: "這一年多來，覺得右邊眼睛看東西越來越模糊，好像隔著一層毛玻璃，而且晚上看路燈會有很嚴重的眩光與雙重疊影。上個月眼科門診檢查，醫生說是白內障，建議做常規的微創超音波乳化手術並裝人工水晶體. 今天是按照時間來辦理擇期住院，明天早上就要開刀了，心情有點緊張但還算穩定。",
+                pastHistory: "有輕微高血壓 3 年，控制良好。",
+                longTermMeds: "每日晨起服用降血壓藥 Amlodipine 5mg 一顆。",
+                fallHistory: "這一年內沒有跌倒過。",
+                painCurrent: 0,
+                painTolerable: 8,
+                painLocation: "無疼痛部位",
+                painNature: "無任何疼痛與不適，僅有視力障礙與模糊"
+            }
+        ];
+
+        // --- 中重症案例庫 (10% 出現率) ---
+        const severeCases = [
+            {
+                diagnosis: "左側股骨頸骨折 (Fracture of Left Femoral Neck)",
+                moodActing: "痛苦、一臉慘白，神情充滿對肢體被觸碰的恐懼，護理師想翻動你時，你要顯得非常神經質與害怕。",
+                bodyActing: "只能平躺在床上，左大腿 and 臀部下方墊著小枕頭。你的左腳不可以伸直，要把左腳「維持往外轉（外旋）且看起來比右腳短」的姿勢。身體一動就咬牙發出吃痛聲。",
+                presentIllness: "昨天晚上洗完澡，浴室地板濕濕的，我拖鞋滑了一下，整個人側摔在地板上，左邊屁股直接撞到地上。當時痛到眼前一片黑，完全站不起來、也動不了。送急診 X 光一照說我的左邊大腿骨折（股骨頸骨折）。急診現在先幫我做了皮牽引拉著（Skin traction）限制活動，等明天安排手術固定。",
+                pastHistory: "被醫師診斷過有嚴重的「骨質疏鬆症」 3 年，以及「退化性關節炎」 5 年。",
+                longTermMeds: "每天有吃一顆鈣片 and 維生素D3。關節痛的時候會服用醫師開的消炎止痛藥 (NSAID)。",
+                fallHistory: "有（發生時間：昨天晚上，受傷部位：左髖、屁股；跌倒情形：在浴室不慎滑倒，直接屁股著地，隨即無法站立，確診左側股骨頸骨折，目前生活起居完全需要別人協助）。",
+                painCurrent: 9,
+                painTolerable: 3,
+                painLocation: "左側髖關節、大腿根部",
+                painNature: "尖銳的撕裂劇痛，只要稍微翻身、移動肢體，痛度就會飆到最頂點"
+            },
+            {
+                diagnosis: "急性冠心症 / 心肌梗塞 (Acute Coronary Syndrome, ACS)",
+                moodActing: "臉色非常蒼白、面露驚恐與瀕死感、呼吸短促、頻頻深呼吸，人中與額頭要模擬冒冷汗（可噴水霧）。",
+                bodyActing: "手掌呈握拳狀抵著自己的胸口中央（Levine's sign 經典手勢），整個人微微向前駝背、不敢用力呼吸，顯得焦躁不安、坐立難安。",
+                presentIllness: "今天上午在公園散步時，突然胸口正中間爆發出劇烈的壓迫感，好像胸腔被大石頭死死壓扁一樣，痛到完全無法吸氣，而且一路痠痛到左邊脖子 and 左邊手肘。我慢下休息，還吃了一顆放在舌頭底下的硝化甘油（NTG），但藥效不佳，全身一直冒冷汗。急診說我是心肌梗塞，血管塞住了，要立刻安排心導管檢查。",
+                pastHistory: "高血壓 15 年、高血脂症 8 年、心臟冠狀動脈硬化 2 年。",
+                longTermMeds: "阿斯匹靈 Aspirin 100mg QD（每天早上一顆）、降血壓藥 Valsartan 80mg QD、降膽固醇藥 Atorvastatin 20mg QN（每天睡前一顆）。",
+                fallHistory: "這一年內沒有跌倒過。",
+                painCurrent: 10,
+                painTolerable: 2,
+                painLocation: "胸骨後方、心前區，並向上放射至左肩、左手內側與下顎",
+                painNature: "壓榨性、窒息性的緊縮絞痛，感覺像被重物壓住胸口"
+            },
+            {
+                diagnosis: "缺血性腦中風 (Ischemic Stroke)",
+                moodActing: "神情非常沮喪且焦慮，講話嚴重含糊不清、大舌頭、嘴巴閉不緊有口水流出，但神智是清楚的。",
+                bodyActing: "右側嘴角明顯下垂（歪向左邊），說話時只有左半邊嘴角能動。右手軟綿綿地攤在身上、右腳也沒有力氣抬起。你要像「右半身癱瘓」一樣靠在枕頭上，移動都很吃力。",
+                presentIllness: "今天早上起床的時候，我想用右手拿牙膏，右手卻完全使不上力直接掉下來。我試著要站起來，結果右腳一軟差點摔倒。我太太問我怎麼了，我一開口，講話就整個含在嘴裡、聽不懂，而且嘴巴歪歪的。我太太嚇到趕快打119把我送來急診. 電腦斷層說我是左側大腦中風、血管塞住，要住院觀察 and 排復健治療。",
+                pastHistory: "有心房顫動（心律不整） 4 年，以及高血壓 10 年（但我之前嫌麻煩，沒有規律吃心臟病的抗凝血藥）。",
+                longTermMeds: "心臟病藥 Amiodarone 200mg QD（每天一顆）、降血壓藥 Olmesartan 20mg QD。",
+                fallHistory: "這一年內沒有跌倒過（早上那次差點摔倒，但太太及時扶住）。",
+                painCurrent: 1,
+                painTolerable: 6,
+                painLocation: "右半邊肢體發麻 (主要是麻木、無力，無劇烈痛點)",
+                painNature: "無明顯痛點，僅有右側肢體神經傳導異常的鈍麻感"
+            }
+        ];
+
+        // 家族歷史結構化，確保與家族樹 100% 同步
+        const familyHistories = [
+            {
+                text: "父親有高血壓、腦中風病史；媽媽沒聽說有遺傳病。",
+                fatherDisease: "高血壓、腦中風病史",
+                motherDisease: "無特殊慢性病史",
+                siblingDisease: "無特殊慢性病史"
+            },
+            {
+                text: "媽媽有第二型糖尿病和乳癌病史；爸爸沒有慢性病。",
+                fatherDisease: "無特殊慢性病史",
+                motherDisease: "第二型糖尿病、乳癌病史",
+                siblingDisease: "無特殊慢性病史"
+            },
+            {
+                text: "爺爺及爸爸都有氣喘、肺癌病史；家族有過敏體質。",
+                fatherDisease: "氣喘、肺癌病史",
+                motherDisease: "無特殊慢性病史",
+                siblingDisease: "無特殊慢性病史",
+                grandpaDisease: "氣喘、肺癌病史"
+            },
+            {
+                text: "父母雙方都得過糖尿病和高血壓，家裡兄弟姊妹也都有高血壓。",
+                fatherDisease: "糖尿病、高血壓病史",
+                motherDisease: "糖尿病、高血壓病史",
+                siblingDisease: "多有高血壓病史"
+            },
+            {
+                text: "沒有聽說家人有任何特殊的遺傳疾病或癌症。",
+                fatherDisease: "無特殊慢性病史",
+                motherDisease: "無特殊慢性病史",
+                siblingDisease: "無特殊慢性病史"
+            }
+        ];
+
+        const medAllergies = [
+            "沒有藥物過敏史。",
+            "不清楚自己有沒有過敏過。", 
+            "有過敏！以前感冒吃過「盤尼西林 (Penicillin)」抗生素，結果全身起紅色蕁麻疹、癢到睡不著. 那是十年前的事情了。",
+            "有過敏！吃非類固醇止痛藥 (NSAID) 會過敏，眼睛跟嘴唇會整個腫得像香腸. 大概是五年前發生的。",
+            "有過敏！照過電腦斷層顯影劑，打下去之後喉嚨發熱、全身呼吸困難、冒疹子，快被嚇死. 是三年前的事。",
+            "有過敏！吃過「磺胺類藥物 (Sulfa)」，皮膚發癢狂抓，是二十年前在小診所發生的。"
+        ];
+
+        const foodAllergies = [
+            "沒有食物過敏。",
+            "沒印象有對什麼食物過敏過。",
+            "吃海鮮（尤其是蝦子、螃蟹）會過敏，全身會起蕁麻疹、非常癢。",
+            "吃花生會過敏，只要吃到花生製品喉嚨就會腫起來、呼吸不順。",
+            "吃芒果會過敏，嘴唇 and 嘴角會發紅發癢。"
+        ];
+
+        const otherAllergies = [
+            "沒有對其他東西過敏。",
+            "不知道。",
+            "對乳膠過敏，只要手戴乳膠手套或碰到橡皮筋，皮膚就會發紅起水泡。",
+            "有花粉過敏，吸到花粉就會不停流鼻水、打噴嚏。",
+            "對塵蟎嚴重過敏，房間不乾淨就會狂咳嗽、遺傳性過敏氣喘。"
+        ];
+
+        const religions = [
+            { name: "沒有特別宗教信仰", importance: "普通" },
+            { name: "一般民間信仰（拜觀音、媽祖）", importance: "重要（如果住院，希望家人幫忙去廟裡拿平安符放床頭）" },
+            { name: "道教（有拿平安符、收驚習慣）", importance: "非常重要（生病時一定要祈求神明保佑、喝符水）" },
+            { name: "佛教（平時有唸經、吃早齋）", importance: "非常重要（希望病房環境安靜，能聽佛經或唸經）" },
+            { name: "基督教（有受洗，星期天要聚會）", importance: "非常重要（住院時希望教會的牧師 and 弟兄姊妹來幫我禱告，這是我很大的心靈支柱）" },
+            { name: "天主教（會唸玫瑰經、禱告）", importance: "重要（希望神父能來幫我做傅油禮或祈福）" }
+        ];
+
+        const smokeHistories = [
+            "無", "不詳",
+            "有，一天抽一包，抽了 30 年，目前無戒菸意願。",
+            "以前抽，一天一包半，菸齡 40 年. 但 5 年前因病「已戒菸」。",
+            "有，一天半包，菸齡 15 年，有考慮出院後戒菸。"
+        ];
+
+        const drinkHistories = [
+            "無特別喝酒習慣，頂多社交場合喝一點。",
+            "無",
+            "有，每天固定喝啤酒 2 大瓶，喝了 20 年。",
+            "以前天天喝高粱酒. 但自從兩年前肝功能變差，「已戒酒」兩年。"
+        ];
+
+        const betelHistories = [
+            "這輩子從來沒吃過檳榔。",
+            "以前嚼，每天大概 10 顆，嚼了 15 年. 現在已少嚼。",
+            "以前一天嚼 15 顆，但 3 年前「已徹底戒掉」。"
+        ];
+
+        const sleepQualities = [
+            "大約 5 小時，睡眠品質差，晚上容易醒、難入睡。",
+            "大約 6 小時，自覺品質還可以，蠻穩定的。",
+            "大約 4 小時，頻尿嚴重，半夜常爬起來尿尿、睡不飽。",
+            "一天睡足 8 小時，沾床就睡著，睡眠良好。"
+        ];
+
+        const travelHistories = [
+            "最近一個月內都沒有出國。",
+            "無出國史。",
+            "有，兩個禮拜前才剛跟團去「日本東京」玩了五天回來。",
+            "有，大概十天前去過「越南胡志明市」出差三天剛返國。"
+        ];
+
+        const contactHistories = [
+            "無接觸過特別的傳染病患或禽畜。",
+            "家裡有養鸚鵡，平時有清理鳥糞（禽畜接觸史）。",
+            "同住女兒上個禮拜確診 A 型流感，這幾天有一起用餐（有流感接觸史）。",
+            "無特殊接觸史。"
+        ];
+
+        // --- 核心邏輯：100% 邏輯一致性過濾器 ---
+        
+        // 根據年齡與婚姻，動態生成完全符合物理常規的子女名單
+        function generateChildren(age, marriageStatus) {
+            let children = [];
+            const hasKidsStatus = ["已婚", "同居", "喪偶", "離婚", "分居"].includes(marriageStatus);
+            
+            if (hasKidsStatus && age > 30) {
+                let childCount = 0;
+                if (age > 45) {
+                    childCount = 1 + Math.floor(Math.random() * 3); // 1 ~ 3 個
+                } else if (age > 33) {
+                    childCount = Math.random() > 0.4 ? 1 : 2; // 0 ~ 2 個
+                }
+                
+                for (let i = 1; i <= childCount; i++) {
+                    let childAge = age - 24 - (i * 3) - Math.floor(Math.random() * 3);
+                    if (childAge < 1) childAge = 1;
+                    const isDaughter = Math.random() > 0.5;
+                    let relation = "";
+                    if (childCount === 1) {
+                        relation = isDaughter ? "女兒" : "兒子";
+                    } else if (i === 1) {
+                        relation = isDaughter ? "長女" : "長子";
+                    } else if (i === 2) {
+                        relation = isDaughter ? "次女" : "次子";
+                    } else {
+                        relation = isDaughter ? "參女" : "參子";
+                    }
+                    children.push({
+                        relation,
+                        age: childAge,
+                        healthy: Math.random() > 0.2
+                    });
+                }
+            }
+            return children;
+        }
+
+        // 動態重寫病歷經過與接觸史文本中的「家人關係」，徹底避免邏輯打架！
+        function formatScriptText(text, gender, marriageStatus, children, livingStatus) {
+            if (!text) return "";
+            let formatted = text;
+
+            // 1. 決定適用的配偶稱謂 (若未婚/離婚/喪偶，則會智能轉換為其他同住關係)
+            const isMarriedOrCoLiving = ["已婚", "同居"].includes(marriageStatus);
+            let partnerTerm = "家屬";
+            if (isMarriedOrCoLiving) {
+                partnerTerm = (gender === "男") ? "太太" : "先生";
+            } else {
+                if (children.length > 0) {
+                    partnerTerm = children[0].relation; // 由長子/長女陪伴送醫
+                } else if (livingStatus.includes("父母")) {
+                    partnerTerm = "家人";
+                } else {
+                    partnerTerm = "鄰居"; // 獨居者由鄰居或警消發現送醫
+                }
+            }
+
+            // 取代所有「太太」相關關鍵字
+            formatted = formatted.replace(/我太太/g, partnerTerm);
+            formatted = formatted.replace(/太太/g, partnerTerm);
+
+            // 2. 決定同住流感接觸史的關係人（防止明明只有兒子卻跑出女兒生病）
+            let childTerm = "同住家人";
+            if (children.length > 0) {
+                const daughters = children.filter(c => c.relation.includes("女"));
+                const sons = children.filter(c => c.relation.includes("子"));
+                if (daughters.length > 0) {
+                    childTerm = `同住的${daughters[0].relation}`;
+                } else if (sons.length > 0) {
+                    childTerm = `同住的${sons[0].relation}`;
+                }
+            } else {
+                if (livingStatus.includes("父母")) {
+                    childTerm = "同住的手足";
+                } else {
+                    childTerm = "隔壁鄰居"; // 獨居則改為鄰居確診
+                }
+            }
+            formatted = formatted.replace(/同住女兒/g, childTerm);
+
+            return formatted;
+        }
+
+        // 建立符合家庭樹邏輯與遺傳病史 100% 同步的家庭成員狀況描述
+        function generateFamilyTreeDetails(age, marriageStatus, gender, famHistoryObj, children) {
+            let fatherAgeAtDeath = 65 + Math.floor(Math.random() * 20);
+            let motherAgeAtDeath = 70 + Math.floor(Math.random() * 20);
+            let fatherStatus = "";
+            let motherStatus = "";
+
+            const fDisease = famHistoryObj.fatherDisease;
+            const mDisease = famHistoryObj.motherDisease;
+
+            if (age < 45) {
+                fatherStatus = `父親：現年 ${age + 25} 歲，${fDisease}，目前服藥控制中。`;
+                motherStatus = `母親：現年 ${age + 22} 歲，${mDisease}，控制中。`;
+            } else {
+                fatherStatus = `父親：已故（於 ${fatherAgeAtDeath} 歲時因「${fDisease.includes('無') ? '老衰' : fDisease.split('、')[0].split('病')[0]}」過世）。`;
+                motherStatus = `母親：已故（於 ${motherAgeAtDeath} 歲時因「${mDisease.includes('無') ? '老衰' : mDisease.split('、')[0].split('病')[0]}」過世）。`;
+            }
+
+            // 防呆乾淨化
+            if (fDisease === "無特殊慢性病史" && age >= 45) {
+                fatherStatus = `父親：已故（於 ${fatherAgeAtDeath} 歲時因老衰過世，生前身體尚健朗）。`;
+            }
+            if (mDisease === "無特殊慢性病史" && age >= 45) {
+                motherStatus = `母親：已故（於 ${motherAgeAtDeath} 歲時因老衰過世，生前無特殊疾病）。`;
+            }
+
+            let spouseStatus = "";
+            let childrenStatus = "";
+            let livingStatus = "";
+
+            if (marriageStatus === "已婚" || marriageStatus === "同居") {
+                let spouseAge = age + (gender === "男" ? -2 : 2) + Math.floor(Math.random() * 3);
+                if (spouseAge < 18) spouseAge = 20;
+                const spouseTerm = gender === "男" ? "配偶(太太)" : "配偶(先生)";
+                spouseStatus = `${spouseTerm}：現年 ${spouseAge} 歲，健康狀況良好。`;
+                
+                if (children.length > 0) {
+                    const kidsStr = children.map(c => `${c.relation}(現年 ${c.age} 歲，${c.healthy ? '健康' : '有過敏體質'})`).join('、');
+                    childrenStatus = `子女：共 ${children.length} 名，分別為 ${kidsStr}。`;
+                    livingStatus = `目前與配偶及${children[0].relation}同住。`;
+                } else {
+                    childrenStatus = "子女：目前無子女。";
+                    livingStatus = "目前與配偶兩人在外租屋同住。";
+                }
+            } else if (marriageStatus === "喪偶") {
+                const spouseTerm = gender === "男" ? "配偶(太太)" : "配偶(先生)";
+                spouseStatus = `${spouseTerm}：已故（三年前因疾病過世）。`;
+                if (children.length > 0) {
+                    const kidsStr = children.map(c => `${c.relation}(現年 ${c.age} 歲，健康)`).join('、');
+                    childrenStatus = `子女：共 ${children.length} 名，分別為 ${kidsStr}。`;
+                    livingStatus = `目前與${children[children.length - 1].relation}一家同住，平時有人照應。`;
+                } else {
+                    childrenStatus = "子女：無子女。";
+                    livingStatus = "配偶過世後，目前獨自一人居住（獨居）。";
+                }
+            } else if (marriageStatus === "離婚" || marriageStatus === "分居") {
+                spouseStatus = `配偶：已離婚/分居，目前無聯絡。`;
+                if (children.length > 0) {
+                    const kidsStr = children.map(c => `${c.relation}(現年 ${c.age} 歲，健康)`).join('、');
+                    childrenStatus = `子女：共 ${children.length} 名，分別為 ${kidsStr}。`;
+                    livingStatus = `目前與${children[0].relation}同住，平時生活相處和睦。`;
+                } else {
+                    childrenStatus = "子女：無子女。";
+                    livingStatus = "目前獨自租屋居住，無同居家人（獨居）。";
+                }
+            } else {
+                // 未婚
+                spouseStatus = "配偶：無配偶（未婚）。";
+                childrenStatus = "子女：無子女。";
+                livingStatus = age < 30 ? "目前與父母、手足同住在一起。" : "目前一個人在外地租屋工作（獨居）。";
+            }
+
+            let siblingStatus = `兄弟姊妹：共有 ${1 + Math.floor(Math.random() * 3)} 個手足（${famHistoryObj.siblingDisease}）。`;
+
+            let grandpaStatusHtml = "";
+            if (famHistoryObj.grandpaDisease) {
+                grandpaStatusHtml = `— 祖父：已故，生前有 ${famHistoryObj.grandpaDisease}。<br>`;
+            }
+
+            return {
+                bullets: [
+                    `<b>第一代 (父母/長輩)：</b><br>${grandpaStatusHtml}— ${fatherStatus}<br>— ${motherStatus}`,
+                    `<b>第二代 (手足、自己、配偶)：</b><br>— ${siblingStatus}<br>— ${spouseStatus}`,
+                    `<b>第三代 (子女)：</b><br>— ${childrenStatus}`,
+                    `<b>同住狀況與環境：</b><br>— ${livingStatus}`
+                ].join('<div class="my-2 border-t border-slate-200/60 pt-1.5"></div>'),
+                livingStatus,
+                spouseStatus,
+                childrenStatus
+            };
+        }
+
+        function generateRandomCase() {
+            const chartNo = "CH" + Math.floor(100000 + Math.random() * 900000);
+            const isMale = Math.random() > 0.5;
+            const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+            const lastName = isMale 
+                ? lastNamesMale[Math.floor(Math.random() * lastNamesMale.length)] 
+                : lastNamesFemale[Math.floor(Math.random() * lastNamesFemale.length)];
+            const name = firstName + lastName;
+            const gender = isMale ? "男" : "女";
+            
+            // 年齡與生日生成
+            const age = Math.floor(18 + Math.random() * 70); // 18 ~ 88 歲
+            const birthYear = 2026 - age;
+            const birthMonth = Math.floor(1 + Math.random() * 12);
+            const birthDay = Math.floor(1 + Math.random() * 28);
+            const birthDateStr = `${birthYear} 年 ${birthMonth} 月 ${birthDay} 日 (${age} 歲)`;
+
+            const occupation = occupations[Math.floor(Math.random() * occupations.length)];
+            const education = educations[Math.floor(Math.random() * educations.length)];
+            const marriage = marriages[Math.floor(Math.random() * marriages.length)];
+            const language = languageStyles[Math.floor(Math.random() * languageStyles.length)];
+
+            // 先決定子女結構 (用於過濾後續所有文字邏輯)
+            const children = generateChildren(age, marriage);
+
+            // 實施 90% 輕症、10% 中重症 機率機制
+            const isMild = Math.random() < 0.90; 
+            const casePoolSelected = isMild ? mildCases : severeCases;
+            const baseCase = casePoolSelected[Math.floor(Math.random() * casePoolSelected.length)];
+            
+            // 決定遺傳病史，並將與家族樹同步
+            const famHistoryObj = familyHistories[Math.floor(Math.random() * familyHistories.length)];
+            const familyTreeData = generateFamilyTreeDetails(age, marriage, gender, famHistoryObj, children);
+
+            // 隨機取出其他資料 (未過濾前)
+            const allergyMed = medAllergies[Math.floor(Math.random() * medAllergies.length)];
+            const allergyFood = foodAllergies[Math.floor(Math.random() * foodAllergies.length)];
+            const allergyOther = otherAllergies[Math.floor(Math.random() * otherAllergies.length)];
+            const rel = religions[Math.floor(Math.random() * religions.length)];
+            const smoke = smokeHistories[Math.floor(Math.random() * smokeHistories.length)];
+            const drink = drinkHistories[Math.floor(Math.random() * drinkHistories.length)];
+            const betel = betelHistories[Math.floor(Math.random() * betelHistories.length)];
+            const sleepStr = sleepQualities[Math.floor(Math.random() * sleepQualities.length)];
+            
+            const rawTravel = travelHistories[Math.floor(Math.random() * travelHistories.length)];
+            const rawContact = contactHistories[Math.floor(Math.random() * contactHistories.length)];
+
+            // --- 邏輯衝突過濾與字詞替換 ---
+            const finalPresentIllness = formatScriptText(baseCase.presentIllness, gender, marriage, children, familyTreeData.livingStatus);
+            const finalContact = formatScriptText(rawContact, gender, marriage, children, familyTreeData.livingStatus);
+            const finalTravel = formatScriptText(rawTravel, gender, marriage, children, familyTreeData.livingStatus);
+            const finalFallHistory = formatScriptText(baseCase.fallHistory, gender, marriage, children, familyTreeData.livingStatus);
+
+            currentCaseData = {
+                severity: isMild ? "mild" : "severe",
+                chartNo,
+                name,
+                gender,
+                age,
+                birthDateStr,
+                occupation,
+                education,
+                communicationStyle: language,
+                marriage,
+                diagnosis: baseCase.diagnosis,
+                moodActing: baseCase.moodActing,
+                bodyActing: baseCase.bodyActing,
+                presentIllness: finalPresentIllness, // 經過防錯過濾
+                pastHistory: baseCase.pastHistory,
+                longTermMeds: baseCase.longTermMeds,
+                fallHistory: finalFallHistory, // 經過防錯過濾
+                familyHistory: famHistoryObj.text,
+                familyTreeHtml: familyTreeData.bullets,
+                allergyMed,
+                allergyFood,
+                allergyOther,
+                religion: `${rel.name} (重要性評估：${rel.importance})`,
+                smoke,
+                drink,
+                betel,
+                sleep: sleepStr,
+                travel: finalTravel, // 經過防錯過濾
+                contact: finalContact, // 經過防錯過濾
+                painCurrent: baseCase.painCurrent,
+                painTolerable: baseCase.painTolerable,
+                painLocation: baseCase.painLocation,
+                painNature: baseCase.painNature
+            };
+
+            updateUI();
+        }
+
+        // --- 更新 UI 顯示與拉霸效果 ---
+        function updateUI() {
+            if (!currentCaseData) return;
+
+            // 1. 更新嚴重度分級標籤
+            const severityBadge = document.getElementById('slot-severity-badge');
+            if (severityBadge) {
+                if (currentCaseData.severity === "mild") {
+                    severityBadge.className = "px-3 py-1 text-xs sm:text-sm font-black rounded-full bg-emerald-500 text-white";
+                    severityBadge.innerHTML = "<i class='fa-solid fa-circle-check mr-1'></i> 輕度症狀 - 穩定";
+                } else {
+                    severityBadge.className = "px-3 py-1 text-xs sm:text-sm font-black rounded-full bg-red-600 text-white animate-pulse";
+                    severityBadge.innerHTML = "<i class='fa-solid fa-triangle-exclamation mr-1'></i> 中/重度症狀 - 密切觀察";
+                }
+            }
+
+            // 2. 格式化疼痛評估 HTML (字體加大優化)
+            const painHtml = `
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm sm:text-base">
+                        <span>目前疼痛強度：<strong class="text-red-600 text-base sm:text-lg">${currentCaseData.painCurrent} 分</strong> <span class="text-xs text-slate-500">(0-10)</span></span>
+                        <span>可忍受程度：<strong class="text-emerald-600 text-base sm:text-lg">${currentCaseData.painTolerable} 分</strong></span>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                        <div class="bg-red-500 h-2 rounded-full" style="width: ${currentCaseData.painCurrent * 10}%"></div>
+                    </div>
+                    <p class="mt-1 text-sm sm:text-base"><strong class="text-slate-700">疼痛部位：</strong>${currentCaseData.painLocation}</p>
+                    <p class="text-sm sm:text-base"><strong class="text-slate-700">疼痛性質：</strong>${currentCaseData.painNature}</p>
+                </div>
+            `;
+
+            const slots = [
+                { id: 'field-chart-no', text: currentCaseData.chartNo },
+                { id: 'slot-personal', text: `${currentCaseData.name} / ${currentCaseData.gender} / ${currentCaseData.age}歲` },
+                { id: 'slot-birth', text: currentCaseData.birthDateStr },
+                { id: 'slot-comm-style', text: currentCaseData.communicationStyle },
+                { id: 'slot-occupation', text: currentCaseData.occupation },
+                { id: 'slot-edu-marriage', text: `${currentCaseData.education} / ${currentCaseData.marriage}` },
+                { id: 'slot-pain', text: painHtml }, 
+                { id: 'script-mood-acting', text: currentCaseData.moodActing },
+                { id: 'script-body-acting', text: currentCaseData.bodyActing },
+                { id: 'script-present-illness-details', text: currentCaseData.presentIllness },
+                { id: 'slot-diagnosis', text: currentCaseData.diagnosis },
+                { id: 'slot-family-tree', text: currentCaseData.familyTreeHtml },
+                { id: 'slot-family-history', text: currentCaseData.familyHistory },
+                { id: 'slot-past-history', text: currentCaseData.pastHistory },
+                { id: 'slot-long-term-med', text: currentCaseData.longTermMeds },
+                { id: 'slot-allergy-med', text: currentCaseData.allergyMed },
+                { id: 'slot-allergy-food', text: currentCaseData.allergyFood },
+                { id: 'slot-allergy-other', text: currentCaseData.allergyOther },
+                { id: 'slot-fall-history', text: currentCaseData.fallHistory },
+                { id: 'slot-religion', text: currentCaseData.religion },
+                { id: 'slot-smoke', text: currentCaseData.smoke },
+                { id: 'slot-drink', text: currentCaseData.drink },
+                { id: 'slot-betel', text: currentCaseData.betel },
+                { id: 'slot-sleep', text: currentCaseData.sleep },
+                { id: 'slot-travel', text: currentCaseData.travel },
+                { id: 'slot-contact', text: currentCaseData.contact }
+            ];
+
+            slots.forEach(slot => {
+                const el = document.getElementById(slot.id);
+                if (el) {
+                    el.classList.remove('slot-animate');
+                    void el.offsetWidth; // 強制重繪
+                    el.classList.add('slot-animate');
+                    el.innerHTML = slot.text;
+                }
+            });
+        }
+
+        // --- 初始化事件 ---
+        window.onload = function() {
+            // 自動生成第一個隨機案例
+            generateRandomCase();
+
+            // 拉霸按鈕
+            document.getElementById('btn-spin').addEventListener('click', () => {
+                const btn = document.getElementById('btn-spin');
+                const icon = btn.querySelector('i');
+                
+                btn.classList.add('scale-95');
+                icon.classList.add('fa-spin');
+                
+                setTimeout(() => {
+                    generateRandomCase();
+                    btn.classList.remove('scale-95');
+                    icon.classList.remove('fa-spin');
+                }, 300);
+            });
+
+            // 說明視窗
+            const modal = document.getElementById('modal-tutorial');
+            document.getElementById('btn-tutorial').addEventListener('click', () => {
+                modal.classList.remove('hidden');
+            });
+            document.getElementById('btn-close-modal').addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+            document.getElementById('btn-close-modal-ok').addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+
+            modal.addEventListener('click', (e) => {
+                if(e.target === modal) modal.classList.add('hidden');
+            });
+        };
+    </script>
+</body>
+</html>

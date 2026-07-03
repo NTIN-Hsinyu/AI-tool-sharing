@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Six AI Teammates · Nursing Education Sharing</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Roboto+Mono:wght@400;500;700&display=swap');
+
+:root{
+  --bg:#FAF8F3;
+  --paper:#FFFFFF;
+  --ink:#1C2B2A;
+  --ink-soft:#4B5A58;
+  --primary:#0E4749;
+  --primary-2:#0A3638;
+  --primary-soft:#E6EFEE;
+  --accent:#D97748;
+  --accent-soft:#FBE9DE;
+  --pulse:#2F8F82;
+  --line:#DDD5C7;
+  --danger:#B5482F;
+  --danger-soft:#F7E3DD;
+  --gold:#B08C3E;
+  --gold-soft:#F3ECDA;
+  --radius:18px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Noto Sans TC',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  overflow:hidden;
+  height:100vh;
+  width:100vw;
+}
+h1,h2,h3,.serif{font-family:'Noto Serif TC',serif;}
+.mono{font-family:'Roboto Mono','Noto Sans TC',monospace;}
+
+/* ---------- pulse line signature ---------- */
+.pulse-rule{
+  width:100%; height:22px; overflow:hidden; opacity:.55;
+}
+.pulse-rule svg{width:100%;height:100%;display:block;}
+.pulse-line{
+  stroke:var(--pulse); stroke-width:2; fill:none;
+  stroke-dasharray:600; stroke-dashoffset:600;
+  animation:draw 2.4s ease-out forwards;
+}
+@keyframes draw{to{stroke-dashoffset:0;}}
+
+/* ---------- top progress + chrome ---------- */
+#topbar{
+  position:fixed; top:0; left:0; right:0; height:4px; z-index:50;
+  background:var(--line);
+}
+#topbar-fill{
+  height:100%; background:linear-gradient(90deg,var(--pulse),var(--primary));
+  width:0%; transition:width .4s ease;
+}
+#menu-btn{
+  position:fixed; top:22px; left:28px; z-index:60;
+  width:46px;height:46px;border-radius:50%;
+  background:var(--paper); border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer; box-shadow:0 2px 10px rgba(14,71,73,.08);
+}
+#menu-btn svg{width:18px;height:18px;stroke:var(--primary);}
+
+#toc{
+  position:fixed; top:0; left:-380px; width:360px; height:100%;
+  background:var(--primary-2); color:#fff; z-index:70;
+  transition:left .35s ease; padding:80px 28px 28px;
+  overflow-y:auto;
+}
+#toc.open{left:0;}
+#toc h3{color:#fff; font-size:1.4rem; margin:0 0 20px;}
+#toc .toc-item{
+  display:flex; gap:12px; align-items:baseline;
+  padding:11px 6px; border-bottom:1px solid rgba(255,255,255,.12);
+  cursor:pointer; font-size:.92rem;
+}
+#toc .toc-item:hover{color:var(--accent-soft);}
+#toc .toc-num{font-family:'Roboto Mono';color:var(--pulse); font-size:.8rem; width:24px; flex:none;}
+#toc-overlay{
+  position:fixed; inset:0; background:rgba(10,20,20,.35); z-index:65;
+  opacity:0; pointer-events:none; transition:opacity .3s;
+}
+#toc-overlay.show{opacity:1; pointer-events:auto;}
+
+/* ---------- slides ---------- */
+#deck{height:100vh; width:100vw; position:relative;}
+.slide{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  padding:64px 88px 40px;
+  opacity:0; visibility:hidden;
+  transform:translateY(14px);
+  transition:opacity .45s ease, transform .45s ease;
+  overflow-y:auto;
+}
+.slide.active{opacity:1; visibility:visible; transform:translateY(0);}
+
+.eyebrow{
+  font-family:'Roboto Mono'; letter-spacing:.12em; font-size:.82rem;
+  color:var(--pulse); font-weight:700; margin-bottom:10px;
+  text-transform:uppercase;
+}
+.slide h2.title{
+  font-size:2.5rem; font-weight:900; color:var(--primary); margin:0 0 6px;
+  line-height:1.25;
+}
+.slide .lede{color:var(--ink-soft); font-size:1.08rem; max-width:900px; line-height:1.75; margin-bottom:26px;}
+
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+
+.card{
+  background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+  padding:26px 28px; box-shadow:0 2px 14px rgba(14,71,73,.05);
+}
+.card h4{margin:0 0 10px; font-size:1.15rem; color:var(--primary); font-family:'Noto Serif TC';}
+.card p{margin:0; color:var(--ink-soft); line-height:1.7; font-size:.98rem;}
+
+.tip-box{
+  background:var(--accent-soft); border-left:6px solid var(--accent);
+  border-radius:14px; padding:20px 26px; margin-top:18px;
+}
+.tip-box h4{margin:0 0 8px; color:var(--accent); font-size:1.02rem;}
+.tip-box p{margin:0;color:#5a3a26; line-height:1.7; font-size:.96rem;}
+
+.warn-box{
+  background:var(--danger-soft); border-left:6px solid var(--danger);
+  border-radius:14px; padding:20px 26px;
+}
+.warn-box h4{margin:0 0 8px; color:var(--danger); font-size:1.05rem;}
+.warn-box p{margin:0;color:#5e2c1c; line-height:1.7; font-size:.95rem;}
+
+.prompt-box{
+  background:var(--primary-2); border-radius:16px; padding:22px 26px; margin-top:16px;
+  position:relative; color:#EAF3F1;
+}
+.prompt-box .ptitle{
+  font-family:'Roboto Mono'; font-size:.85rem; color:var(--pulse);
+  margin-bottom:10px; letter-spacing:.03em;
+}
+.prompt-box p{margin:0; line-height:1.8; font-size:.96rem; color:#DDEDEA;}
+.copy-btn{
+  position:absolute; top:18px; right:20px;
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25);
+  color:#fff; font-size:.78rem; padding:6px 14px; border-radius:20px;
+  cursor:pointer; font-family:'Noto Sans TC';
+}
+.copy-btn:hover{background:rgba(255,255,255,.2);}
+
+.steps{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:14px;}
+.steps li{display:flex; gap:16px; align-items:flex-start;}
+.step-num{
+  flex:none; width:32px; height:32px; border-radius:50%;
+  background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center;
+  font-family:'Roboto Mono'; font-weight:700; font-size:.9rem;
+}
+.steps .stext strong{display:block; color:var(--ink); font-size:1rem; margin-bottom:2px;}
+.steps .stext span{color:var(--ink-soft); font-size:.92rem; line-height:1.6;}
+
+.badge{
+  display:inline-block; padding:4px 14px; border-radius:20px;
+  font-size:.78rem; font-family:'Roboto Mono'; font-weight:700;
+  background:var(--primary-soft); color:var(--primary); margin-bottom:14px;
+}
+.badge.gold{background:var(--gold-soft); color:var(--gold);}
+.badge.accent{background:var(--accent-soft); color:var(--accent);}
+
+footer.speaker{
+  margin-top:auto; padding-top:18px; border-top:1px solid var(--line);
+  display:flex; justify-content:space-between; align-items:center;
+  color:var(--ink-soft); font-size:.85rem;
+}
+
+/* bottom nav */
+#nav{
+  position:fixed; bottom:26px; left:0; right:0; z-index:55;
+  display:flex; align-items:center; justify-content:center; gap:18px;
+  pointer-events:none;
+}
+#nav > *{pointer-events:auto;}
+.nav-btn{
+  width:44px;height:44px;border-radius:50%; background:var(--paper);
+  border:1px solid var(--line); display:flex; align-items:center; justify-content:center;
+  cursor:pointer; box-shadow:0 2px 10px rgba(14,71,73,.1);
+}
+.nav-btn svg{width:16px;height:16px; stroke:var(--primary);}
+.nav-btn.disabled{opacity:.3; pointer-events:none;}
+#page-counter{
+  font-family:'Roboto Mono'; font-size:.85rem; color:var(--ink-soft);
+  background:var(--paper); border:1px solid var(--line); border-radius:20px;
+  padding:10px 20px;
+}
+
+/* cover slide specific */
+.cover-title{font-size:3.6rem; line-height:1.2; color:var(--primary); font-weight:900; margin:16px 0 18px;}
+.cover-sub{font-size:1.25rem; color:var(--ink-soft); margin-bottom:34px; max-width:760px; line-height:1.6;}
+.cover-tags{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:40px;}
+.cover-tags span{
+  background:var(--primary-soft); color:var(--primary); padding:8px 18px;
+  border-radius:20px; font-size:.9rem; font-family:'Roboto Mono';
+}
+.tool-badge{
+  display:flex !important; align-items:center; gap:10px;
+  background:var(--paper) !important; border:1px solid var(--line);
+  padding:8px 20px 8px 8px !important; color:var(--ink) !important;
+  font-family:'Noto Sans TC' !important; font-weight:600; font-size:.95rem !important;
+}
+.tool-icon{
+  width:30px; height:30px; border-radius:50%; flex:none;
+  display:flex; align-items:center; justify-content:center;
+}
+.tool-icon svg{width:16px; height:16px;}
+
+/* tool map */
+.toolmap-group{margin-bottom:26px;}
+.toolmap-group-label{font-family:'Roboto Mono'; font-size:.85rem; color:var(--pulse); font-weight:700; margin-bottom:10px;}
+.tool-row{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.tool-chip{
+  background:var(--paper); border:1px solid var(--line); border-radius:14px;
+  padding:18px 20px; display:flex; gap:14px; align-items:flex-start;
+}
+.tool-chip .emoji{font-size:1.5rem;}
+.tool-chip strong{display:block; color:var(--primary); font-size:1rem; margin-bottom:4px;}
+.tool-chip span{color:var(--ink-soft); font-size:.85rem; line-height:1.5;}
+
+.video-wrap{
+  border-radius:14px; overflow:hidden; border:1px solid var(--line);
+  aspect-ratio:16/9; max-width:640px;
+}
+.video-wrap iframe, .video-wrap video{width:100%; height:100%; border:none; display:block; background:#000;}
+
+/* iframe slide */
+.iframe-wrap{
+  flex:1; border-radius:16px; overflow:hidden; border:1px solid var(--line);
+  box-shadow:0 4px 20px rgba(14,71,73,.08); min-height:0;
+}
+.iframe-wrap iframe{width:100%; height:100%; border:none;}
+
+/* ethics grid */
+.ethic-card{border-radius:16px; padding:22px 24px; border-left:6px solid;}
+.ethic-card h4{margin:0 0 10px; font-size:1.05rem; font-family:'Noto Serif TC';}
+.ethic-card p{margin:0; line-height:1.7; font-size:.92rem; color:var(--ink-soft);}
+
+@media (max-width:1100px){
+  .slide{padding:48px 32px 30px;}
+  .grid2,.grid3,.tool-row{grid-template-columns:1fr;}
+  .cover-title{font-size:2.4rem;}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar"><div id="topbar-fill"></div></div>
+<div id="menu-btn" onclick="toggleTOC()">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/></svg>
+</div>
+<div id="toc-overlay" onclick="toggleTOC()"></div>
+<div id="toc"></div>
+
+<div id="deck"></div>
+
+<div id="nav">
+  <div class="nav-btn" id="prev-btn" onclick="go(-1)">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <div id="page-counter">1 / 14</div>
+  <div class="nav-btn" id="next-btn" onclick="go(1)">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</div>
+
+<script>
+function pulseSVG(w){
+  return `<div class="pulse-rule"><svg viewBox="0 0 ${w} 22" preserveAspectRatio="none">
+    <path class="pulse-line" d="M0 11 H${w*0.32} L${w*0.36} 3 L${w*0.4} 19 L${w*0.44} 11 H${w*0.6} L${w*0.64} 5 L${w*0.68} 17 L${w*0.72} 11 H${w}"/>
+  </svg></div>`;
+}
+
+const SPEAKER_NAME = "Hsin-Yu Chao (Sherry) - National Tainan Junior College of Nursing";
+const EVENT_LABEL = "Nursing & Healthcare Educator AI Sharing";
+
+const slides = [];
+
+/* 1. Cover */
+slides.push({
+  title:"Cover",
+  html:`
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+    <div class="eyebrow">${EVENT_LABEL}</div>
+    <h1 class="cover-title">Five AI Teammates<br>From Lesson Prep to Interactive Teaching Materials</h1>
+    <p class="cover-sub">Real, working examples using Gemini, Perplexity, and NotebookLM in nursing education.</p>
+    <div class="cover-tags">
+      <span class="tool-badge">
+        <span class="tool-icon" style="background:linear-gradient(135deg,#4F7CFE,#B24FE0 50%,#FF6B5B);">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2 C12.8 8 16 11.2 22 12 C16 12.8 12.8 16 12 22 C11.2 16 8 12.8 2 12 C8 11.2 11.2 8 12 2 Z"/></svg>
+        </span>
+        Gemini
+      </span>
+      <span class="tool-badge">
+        <span class="tool-icon" style="background:#20808D;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M12 3 L12 21 M3 8.5 L21 15.5 M21 8.5 L3 15.5" stroke-linecap="round"/></svg>
+        </span>
+        Perplexity
+      </span>
+      <span class="tool-badge">
+        <span class="tool-icon" style="background:linear-gradient(135deg,#4285F4,#9B72CB 50%,#EA4335);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H12V20H5.5C4.7 20 4 19.3 4 18.5V5.5Z"/><path d="M12 4H18.5C19.3 4 20 4.7 20 5.5V18.5C20 19.3 19.3 20 18.5 20H12" /><path d="M14.5 8H17.5M14.5 11H17.5M14.5 14H17.5" stroke-linecap="round"/></svg>
+        </span>
+        NotebookLM
+      </span>
+    </div>
+  </div>
+  <footer class="speaker"><span>Speaker: ${SPEAKER_NAME}</span><span>※ Tools update quickly — live demo reflects the interface on the day</span></footer>
+  `
+});
+
+/* 2. Opening */
+slides.push({
+  title:"Opening: What We're Solving",
+  html:`
+  <div class="eyebrow">Opening</div>
+  <h2 class="title">Lesson Prep, Materials, Practice Questions — AI Can Help at Every Step</h2>
+  <p class="lede">Everyday nursing teaching keeps hitting the same walls: too much literature and guidance to read before class;
+  teaching materials and infographics take time to design; practice questions and interactive scenarios need constant updating.
+  The six tools shared today each address one of these pain points, and every workflow here is something I've actually used and confirmed works.</p>
+  ${pulseSVG(1400)}
+  <div class="grid3" style="margin-top:10px;">
+    <div class="card"><h4>📚 Too Much to Read</h4><p>Literature, guidelines, and textbook chapters pile up — reading them one by one takes too long.</p></div>
+    <div class="card"><h4>🎨 Materials Take Too Long</h4><p>Infographics, slides, and interactive materials all take time to design and produce.</p></div>
+    <div class="card"><h4>📝 Practice Questions Never End</h4><p>Scenario-based questions and pop quizzes need constant updates, and grading adds to the load.</p></div>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part 0 · Opening</span></footer>
+  `
+});
+
+/* 3. Tool map */
+slides.push({
+  title:"Tool Map Overview",
+  html:`
+  <div class="eyebrow">Overview</div>
+  <h2 class="title">Six Tools, Three Roles</h2>
+  <p class="lede">You don't need to master all six — knowing which one to reach for makes everything else click.</p>
+
+  <div class="toolmap-group">
+    <div class="toolmap-group-label">A | Research Pair — Confirm the Latest Evidence, Then Organize It</div>
+    <div class="tool-row">
+      <div class="tool-chip"><span class="emoji">🔍</span><div><strong>Perplexity</strong><span>AI search with cited sources — check literature and evidence levels</span></div></div>
+      <div class="tool-chip"><span class="emoji">📚</span><div><strong>NotebookLM</strong><span>Download what Perplexity finds, then turn it into a Q&A knowledge base, mind maps, and review resources</span></div></div>
+      <div class="tool-chip" style="visibility:hidden"></div>
+    </div>
+  </div>
+  <div class="toolmap-group">
+    <div class="toolmap-group-label">B | Quick Prep — Ask and Generate On the Fly</div>
+    <div class="tool-row">
+      <div class="tool-chip"><span class="emoji">💬</span><div><strong>Ask Gemini</strong><span>Browser side panel — ask questions about any webpage, video, or PDF on the spot</span></div></div>
+      <div class="tool-chip"><span class="emoji">🎨</span><div><strong>Nano Banana</strong><span>Gemini's image generator — infographics and posters with accurate embedded text</span></div></div>
+      <div class="tool-chip"><span class="emoji">📖</span><div><strong>Gemini Storybook</strong><span>Turns a prompt into a 10-page illustrated story with narration</span></div></div>
+    </div>
+  </div>
+  <div class="toolmap-group">
+    <div class="toolmap-group-label">C | Interactive Materials</div>
+    <div class="tool-row">
+      <div class="tool-chip"><span class="emoji">🎮</span><div><strong>Gemini Canvas</strong><span>Turn text prompts into interactive web games and simulation tools</span></div></div>
+      <div class="tool-chip" style="visibility:hidden"></div><div class="tool-chip" style="visibility:hidden"></div>
+    </div>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part 0 · Tool Map</span></footer>
+  `
+});
+
+/* 4. Perplexity */
+slides.push({
+  title:"A-1 | Perplexity",
+  html:`
+  <div class="badge">GROUP A | RESEARCH PAIR</div>
+  <h2 class="title">🔍 Literature Search With Cited Sources</h2>
+  <p class="lede">Perplexity fact-checks every answer in real time and links back to its sources, with a dedicated Academic mode for scholarly search — the first step: confirm what the latest evidence actually says.</p>
+  <div class="grid2">
+    <div class="card">
+      <h4>How To</h4>
+      <ul class="steps">
+        <li><div class="step-num">1</div><div class="stext"><strong>Choose the search scope</strong><span>General web, or Academic mode</span></div></li>
+        <li><div class="step-num">2</div><div class="stext"><strong>Ask your question</strong><span>The answer appears as bullet points with numbered source citations</span></div></li>
+        <li><div class="step-num">3</div><div class="stext"><strong>Click a citation to verify</strong><span>Jump straight to the original paper or webpage</span></div></li>
+        <li><div class="step-num">4</div><div class="stext"><strong>Keep asking follow-ups</strong><span>Perplexity remembers context so you can dig deeper</span></div></li>
+      </ul>
+    </div>
+    <div>
+      <div class="card"><h4>Nursing Teaching Example</h4><p>When checking the latest fall-prevention guidelines or medication-related literature, Academic mode pulls several recent papers with source links and evidence levels in one search — saving the time of searching and cross-checking one by one.</p></div>
+      <div class="prompt-box">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+        <div class="ptitle">📎 PROMPT EXAMPLE</div>
+        <p>List academic studies published in the last five years on "acute myocardial infarction and mental health", including title, authors, abstract, source link, and evidence level.</p>
+      </div>
+    </div>
+  </div>
+  <div class="tip-box">
+    <h4>➡️ Next Step</h4>
+    <p>Download the papers or export the findings, then bring them into NotebookLM on the next page to turn them into an organized, question-answerable knowledge base.</p>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part A · 1/2</span></footer>
+  `
+});
+
+/* 5. NotebookLM */
+slides.push({
+  title:"A-2 | NotebookLM",
+  html:`
+  <div class="badge">GROUP A | RESEARCH PAIR</div>
+  <h2 class="title">📚 Turn What You Found Into Teaching Resources</h2>
+  <p class="lede">NotebookLM answers strictly from the sources you upload and cites them — no fabrication. Download the papers Perplexity found, drop them in here, and they become a searchable, Q&A-ready knowledge base plus one-click study materials.</p>
+  <div class="grid2">
+    <div class="card">
+      <h4>How To</h4>
+      <ul class="steps">
+        <li><div class="step-num">1</div><div class="stext"><strong>Create a notebook, add sources</strong><span>Upload the PDFs from Perplexity, paste links, or add a YouTube video as a source</span></div></li>
+        <li><div class="step-num">2</div><div class="stext"><strong>Ask questions (with citations)</strong><span>"What are the key points of this chapter?" — every answer is traceable to its source</span></div></li>
+        <li><div class="step-num">3</div><div class="stext"><strong>Generate materials with Studio</strong><span>One click to turn sources into the formats listed on the right</span></div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Nursing Teaching Example</h4>
+      <p>Upload long-term care assessment guidelines or the papers Perplexity just found, and ask NotebookLM to pull out what applies directly to your unit — every claim comes with a clickable source.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px;">
+    <h4>🧰 NotebookLM Studio Features</h4>
+    <p style="margin-bottom:14px;">Once your sources are in, the Studio panel can generate:</p>
+    <div class="grid3">
+      <div class="card"><h4>💬 Cited Q&A Chat</h4><p>Ask questions in plain language; every answer links back to the exact source passage.</p></div>
+      <div class="card"><h4>🎧 Audio Overview</h4><p>Podcast-style discussion of your sources; Interactive Mode lets you join in and steer the conversation live.</p></div>
+      <div class="card"><h4>🎬 Video Overview</h4><p>An animated, narrated walkthrough of your material — good for a pre-class preview.</p></div>
+      <div class="card"><h4>🧠 Mind Map</h4><p>An interactive map of everything in your sources; click any branch to open a grounded chat on that topic.</p></div>
+      <div class="card"><h4>📄 Reports</h4><p>Turns raw sources into a finished briefing doc, FAQ, or timeline in minutes.</p></div>
+      <div class="card"><h4>📊 Slide Decks</h4><p>Auto-generates a presentation from your sources, exportable as PPTX.</p></div>
+      <div class="card"><h4>📋 Data Tables</h4><p>Pulls scattered facts across sources into a structured, sortable table.</p></div>
+      <div class="card"><h4>🗂️ Flashcards &amp; Quizzes</h4><p>Grounded in your uploaded material only — good for student self-review, not generic trivia.</p></div>
+    </div>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part A · 2/2</span></footer>
+  `
+});
+
+/* 6. Ask Gemini */
+slides.push({
+  title:"B-1 | Ask Gemini",
+  html:`
+  <div class="badge">GROUP B | QUICK PREP</div>
+  <h2 class="title">💬 Ask Gemini Right in Chrome</h2>
+  <p class="lede">While reading a webpage, watching a video, or opening a PDF, skip the copy-paste — just ask Gemini in the browser's side panel to summarize, translate, or pull out key points. Useful the moment you need it while prepping a lesson.</p>
+  <div class="grid2">
+    <div class="card">
+      <h4>How To</h4>
+      <ul class="steps">
+        <li><div class="step-num">1</div><div class="stext"><strong>Sign in to Google, update Chrome</strong><span>Make sure you're signed in and Chrome is on the latest version</span></div></li>
+        <li><div class="step-num">2</div><div class="stext"><strong>Open the page or video you want to review</strong><span>For example, a clinical guideline, a skills demonstration video, or a patient education PDF</span></div></li>
+        <li><div class="step-num">3</div><div class="stext"><strong>Open Gemini in the side panel</strong><span>Click the Gemini icon in the top-right corner of Chrome</span></div></li>
+        <li><div class="step-num">4</div><div class="stext"><strong>Ask it to summarize, follow up, and expand</strong><span>Generate notes as you go, then ask "What's usable for teaching?"</span></div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>📍 Where to Find "Ask Gemini" in Chrome</h4>
+      <p style="margin-bottom:14px;">Click the "Ask Gemini" icon at the top of the Chrome window to open the side panel. If you don't see it yet, here's what it needs:</p>
+      <ul class="steps">
+        <li><div class="step-num">1</div><div class="stext"><strong>Update Chrome to the latest version</strong><span>Menu → Help → About Google Chrome</span></div></li>
+        <li><div class="step-num">2</div><div class="stext"><strong>Sign in with a personal Google account</strong><span>Must be signed in, not Incognito; managed/work or Family Link accounts may be restricted</span></div></li>
+        <li><div class="step-num">3</div><div class="stext"><strong>Check availability in your region</strong><span>Google is rolling this out gradually — it may not have reached your country/region yet</span></div></li>
+        <li><div class="step-num">4</div><div class="stext"><strong>You must be 18 or older</strong><span>Age verification may be required the first time</span></div></li>
+      </ul>
+    </div>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part B · 1/3</span></footer>
+  `
+});
+
+/* 4b. Ask Gemini — Example & Demo */
+slides.push({
+  title:"B-1 | Ask Gemini — Example & Demo",
+  html:`
+  <div class="badge">GROUP B | QUICK PREP</div>
+  <h2 class="title">💬 Ask Gemini — Example &amp; Live Demo</h2>
+  <p class="lede">Putting it into practice: a teaching example, a ready-to-use prompt, and a live recording of the actual workflow.</p>
+  <div class="grid2">
+    <div class="card"><h4>Nursing Teaching Example</h4><p>While reviewing a clinical guideline or a skills demo video, ask Gemini to summarize it into teaching notes with clickable timestamps — turning a one-hour training video into a two-minute summary.</p></div>
+    <div class="prompt-box">
+      <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+      <div class="ptitle">📎 PROMPT EXAMPLE</div>
+      <p>Turn this video into teaching notes: (1) summarize the main content in 6–8 bullet points, each tagged with a timestamp; (2) list the 3 key concepts students should remember most; (3) write 3 short quiz questions with answers. If the video is a clinical skills demonstration, list it as a "procedure step sequence" instead.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px;">
+    <h4>🎥 Live Demo: Using Ask Gemini in the Side Panel</h4>
+    <p style="margin-bottom:14px;">A screen recording of the actual workflow — opening the side panel and asking Gemini a question.</p>
+    <div class="video-wrap" style="max-width:1200px; width:100%;"><video src="ask-gemini-demo.mp4" controls preload="metadata"></video></div>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part B · 1/3</span></footer>
+  `
+});
+
+/* 5. Nano Banana */
+slides.push({
+  title:"B-2 | Nano Banana",
+  html:`
+  <div class="badge">GROUP B | QUICK PREP</div>
+  <h2 class="title">🎨 Generate Infographics With Accurate Text, Using AI</h2>
+  <p class="lede">Gemini's Nano Banana Pro model can produce complete, accurate text directly inside generated images, so patient education handouts and posters come out finished the first time, no manual text fixes needed.</p>
+  <div class="grid2">
+    <div class="card">
+      <h4>How To</h4>
+      <ul class="steps">
+        <li><div class="step-num">1</div><div class="stext"><strong>Use the right model</strong><span>In Gemini, choose "Create image"</span></div></li>
+        <li><div class="step-num">2</div><div class="stext"><strong>Put the exact text you want in quotation marks</strong><span>Specify placement too, so the model renders it exactly instead of improvising</span></div></li>
+        <li><div class="step-num">3</div><div class="stext"><strong>Always proofread by hand</strong><span>Check every character before printing — drug names, dosages, and numbers are the easiest to get wrong</span></div></li>
+      </ul>
+    </div>
+    <div>
+      <div class="prompt-box">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+        <div class="ptitle">📎 PROMPT EXAMPLE</div>
+        <p>Create an A4 portrait patient education poster in English on the topic "Heart Failure Care". Layout top to bottom: (1) large headline at top = "Heart Failure Care"; (2) a flat-illustration scene of a care-related moment in the middle; (3) three icons with short captions below, reading "water control", "low salt", "exercise"; (4) small text in the bottom corner = "BCNNON Patient Education". Style: flat illustration, warm colors, clean whitespace, all text must be exactly correct.</p>
+      </div>
+      <p style="color:var(--ink-soft); font-size:.85rem; margin-top:10px; padding:0 4px;">💡 Swap in your own topic, headline, and captions to fit the unit you're teaching.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px;">
+    <h4>🖼️ Same Prompt, Two Tools</h4>
+    <p style="margin-bottom:14px;">The prompt above works with either Gemini or ChatGPT — here's the same request run through both.</p>
+    <div class="grid2">
+      <div>
+        <img src="example-gemini.png" alt="Heart Failure Care poster generated with Gemini" style="width:100%; border-radius:12px; border:1px solid var(--line); display:block;">
+        <p style="text-align:center; margin-top:8px; font-family:'Roboto Mono'; font-size:.8rem; color:var(--pulse);">Made with Gemini</p>
+      </div>
+      <div>
+        <img src="example-chatgpt.png" alt="Heart Failure Care poster generated with ChatGPT" style="width:100%; border-radius:12px; border:1px solid var(--line); display:block;">
+        <p style="text-align:center; margin-top:8px; font-family:'Roboto Mono'; font-size:.8rem; color:var(--pulse);">Made with ChatGPT</p>
+      </div>
+    </div>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part B · 2/3</span></footer>
+  `
+});
+
+/* 5b. Canva Magic Layers */
+slides.push({
+  title:"B-2b | Fixing Typos with Canva Magic Layers",
+  html:`
+  <div class="badge">GROUP A | ADVANCED TIP</div>
+  <h2 class="title">🛠️ Got a Typo? Fix It Without Regenerating</h2>
+  <p class="lede">If an AI-generated poster is 90% right but has a typo, wrong date, or off-brand color, you don't need to re-roll the whole image. Canva's Magic Layers tool splits a flat image into editable text, graphics, and background layers — works with output from Gemini, ChatGPT, or Canva's own AI.</p>
+  <div class="grid2">
+    <div class="card">
+      <h4>How To</h4>
+      <ul class="steps">
+        <li><div class="step-num">1</div><div class="stext"><strong>Export your generated image</strong><span>Save the Gemini or ChatGPT output as a PNG or JPEG</span></div></li>
+        <li><div class="step-num">2</div><div class="stext"><strong>Switch Canva's interface language if needed</strong><span>Account → Settings → Language — currently supported: English, Spanish, Portuguese, French, Italian, German, Dutch</span></div></li>
+        <li><div class="step-num">3</div><div class="stext"><strong>Go to Home → Magic Layers</strong><span>Click "Select Media" and choose the image you generated</span></div></li>
+        <li><div class="step-num">4</div><div class="stext"><strong>Let it split the layers</strong><span>Text becomes an editable text box; graphics and background separate automatically</span></div></li>
+        <li><div class="step-num">5</div><div class="stext"><strong>Fix the typo, then export</strong><span>Click the text layer to correct it, adjust as needed, and download</span></div></li>
+      </ul>
+    </div>
+    <div class="tip-box" style="align-self:start;">
+      <h4>💡 Good to Know</h4>
+      <p>Magic Layers is a Premium AI tool. Free Canva accounts get up to 20 Premium AI uses per month — shared across all Premium AI tools, not exclusive to Magic Layers — so heavy AI users may run out faster than expected. Works best with graphic designs and illustrations (like AI-generated posters); photo-realistic images may separate less cleanly. This is best for small fixes, not a full redesign.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px;">
+    <h4>🎥 Live Demo: Fixing a Typo with Magic Layers</h4>
+    <p style="margin-bottom:14px;">A screen recording of the actual workflow — uploading a generated poster and correcting the text.</p>
+    <div class="video-wrap" style="max-width:1200px; width:100%;"><video src="canva-magic-layers-demo.mp4" controls preload="metadata"></video></div>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part B · 2/3</span></footer>
+  `
+});
+
+/* 6. Perplexity */
+
+/* 8b. Storybook */
+slides.push({
+  title:"B-3 | Gemini Storybook",
+  html:`
+  <div class="badge">GROUP B | QUICK PREP</div>
+  <h2 class="title">📖 Turn a Prompt Into an Illustrated Storybook</h2>
+  <p class="lede">Storybook is a Gemini Gem (a pre-built assistant inside the Gemini app) that turns a short prompt into a 10-page illustrated story with read-aloud narration.</p>
+  <div class="grid2">
+    <div class="card">
+      <h4>How To</h4>
+      <ul class="steps">
+        <li><div class="step-num">1</div><div class="stext"><strong>Go to gemini.google.com, signed in</strong><span>Storybook is limited to users 18 and older</span></div></li>
+        <li><div class="step-num">2</div><div class="stext"><strong>Open Gems → Storybook</strong><span>If it's not visible, click "Explore Gems" to find the full list</span></div></li>
+        <li><div class="step-num">3</div><div class="stext"><strong>Describe the story you want</strong><span>You can also upload your own photos or files for Gemini to draw from</span></div></li>
+        <li><div class="step-num">4</div><div class="stext"><strong>Read, listen, or share</strong><span>Gemini generates a 10-page illustrated book with narration; download as PDF or share a link</span></div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Possible Application</h4>
+      <p>A simple illustrated story could help explain a procedure or a hospital stay to a pediatric patient, or turn a health-education topic into something more approachable — worth trying and evaluating before using with real patients or students.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px;">
+    <h4>🎥 Live Demo: Generating a Storybook</h4>
+    <p style="margin-bottom:14px;">A screen recording of the actual workflow — from prompt to finished illustrated book.</p>
+    <div class="video-wrap" style="max-width:1200px; width:100%;"><video src="storybook-demo.mp4" controls preload="metadata"></video></div>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part B · 3/3</span></footer>
+  `
+});
+
+/* 9. Gemini Canvas intro */
+slides.push({
+  title:"C-1 | Gemini Canvas Overview",
+  html:`
+  <div class="badge accent">GROUP C | INTERACTIVE MATERIALS</div>
+  <h2 class="title">🎮 Building Interactive Web Pages With Gemini Canvas</h2>
+  <p class="lede">Gemini Canvas turns text prompts into interactive web pages you can preview and edit live — the next two pages are teaching tools built this way.</p>
+  <div class="card" style="max-width:640px;">
+    <h4>How To</h4>
+    <ul class="steps">
+      <li><div class="step-num">1</div><div class="stext"><strong>Select Canvas</strong><span>In the Gemini prompt box, choose "Canvas" and describe what you need</span></div></li>
+      <li><div class="step-num">2</div><div class="stext"><strong>Generate the page</strong><span>Click "Create" in the top right, then "Webpage", to get a previewable HTML page</span></div></li>
+      <li><div class="step-num">3</div><div class="stext"><strong>Refine through conversation</strong><span>Keep prompting to adjust the interface, rules, or styling</span></div></li>
+      <li><div class="step-num">4</div><div class="stext"><strong>Export and share</strong><span>Download as a standalone link, or copy the HTML to save as a file</span></div></li>
+    </ul>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part C · 1/3</span></footer>
+  `
+});
+
+/* 10. IVD lottery demo */
+slides.push({
+  title:"C-2 | IVD Lottery System Demo",
+  isDemo:true,
+  html:`
+  <div class="badge accent">GROUP C | CASE STUDY</div>
+  <h2 class="title" style="font-size:1.9rem; margin-bottom:14px;">🎲 Skills-Check Medication Order Lottery System</h2>
+  <p class="lede" style="margin-bottom:14px;">A randomized IVD medication-administration scenario: draws a random combination of drug, diluent, infusion time, and follow-up action, and simultaneously draws which student is tested and which grades — replacing manual drawing of lots.</p>
+  <div class="iframe-wrap"><iframe src="ivd-lottery.html"></iframe></div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part C · 2/3</span></footer>
+  `
+});
+
+/* 11. admission roleplay demo */
+slides.push({
+  title:"C-3 | Admission Roleplay Demo",
+  isDemo:true,
+  html:`
+  <div class="badge accent">GROUP C | CASE STUDY</div>
+  <h2 class="title" style="font-size:1.9rem; margin-bottom:14px;">🎭 Patient Roleplay Script Generator</h2>
+  <p class="lede" style="margin-bottom:14px;">An OSCE admission-assessment simulation: one click generates a complete patient script — persona, presentation cues, pain assessment, and history — so students can take turns practicing an admission nursing assessment interview.</p>
+  <div class="iframe-wrap"><iframe src="admission-roleplay.html"></iframe></div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part C · 3/3</span></footer>
+  `
+});
+
+/* 12. Integrated workflow */
+slides.push({
+  title:"Integrated Workflow",
+  html:`
+  <div class="eyebrow">Putting It Together</div>
+  <h2 class="title">How these Tools Connect</h2>
+  <p class="lede">Looking at each tool alone can feel piecemeal — strung together, they form a complete workflow from prep to materials to practice to interaction.</p>
+  ${pulseSVG(1400)}
+  <div class="grid3" style="margin-top:6px;">
+    <div class="card"><h4>① Verify & Organize</h4><p>Perplexity checks literature and evidence levels → NotebookLM organizes it into a Q&A knowledge base and generates a mind map</p></div>
+    <div class="card"><h4>② Build Materials</h4><p>Nano Banana turns it into a patient-education poster or teaching graphic → Ask Gemini proofreads and double-checks the facts</p></div>
+    <div class="card"><h4>③ Interactive Practice</h4><p>Gemini Canvas turns it into an interactive tool or simulation game students can practice with directly</p></div>
+  </div>
+  <div class="tip-box">
+    <h4>💡 Key Takeaway</h4>
+    <p>These tools are aids — the order can flex depending on the course. What matters is deciding first whether a class needs more source material, more finished teaching materials, or more interactive practice, then picking the right tool — not forcing every tool into every workflow.</p>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Integrated Workflow</span></footer>
+  `
+});
+
+/* 13. Ethics */
+slides.push({
+  title:"Ethics & Guidelines",
+  html:`
+  <div class="eyebrow">Important · Where the Educator Draws the Line</div>
+  <h2 class="title">Four Principles for Teaching With AI</h2>
+  <p class="lede">AI is a powerful assistant, but the professional judgment and responsibility for teaching still rest with the teacher.</p>
+  <div class="grid2">
+    <div class="ethic-card" style="background:var(--danger-soft); border-color:var(--danger);">
+      <h4 style="color:var(--danger);">① Always Verify Facts</h4>
+      <p>AI can state things confidently and still be wrong (hallucination). Drug dosages, clinical classifications, and similar details must be checked against official sources — this is an extension of professional healthcare ethics.</p>
+    </div>
+    <div class="ethic-card" style="background:var(--accent-soft); border-color:var(--accent);">
+      <h4 style="color:var(--accent);">② Privacy and Personal Data</h4>
+      <p>Never upload student records, patient data, or institutional confidential information to cloud-based AI. Always demonstrate with fictional or de-identified data.</p>
+    </div>
+    <div class="ethic-card" style="background:var(--gold-soft); border-color:var(--gold);">
+      <h4 style="color:var(--gold);">③ Copyright and Licensing</h4>
+      <p>Images, videos, and articles are copyrighted. Prefer commercially licensed, CC-licensed, or AI-generated content, and cite sources when quoting.</p>
+    </div>
+    <div class="ethic-card" style="background:var(--primary-soft); border-color:var(--primary);">
+      <h4 style="color:var(--primary);">④ Professional Oversight</h4>
+      <p>AI output is only a draft. Clinical accuracy and instructional appropriateness are your call to make and revise — the responsibility stays with the teacher.</p>
+    </div>
+  </div>
+  <div class="tip-box">
+    <h4>In One Sentence</h4>
+    <p>Treat AI as a capable assistant that still needs your review — not an infallible authority.</p>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Ethics & Guidelines</span></footer>
+  `
+});
+
+/* 14. Q&A */
+slides.push({
+  title:"Q&A · Resources",
+  html:`
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+    <div class="eyebrow">Finally</div>
+    <h2 class="title" style="font-size:2.8rem;">Q&amp;A</h2>
+    <p class="lede" style="font-size:1.15rem;">Thank you for listening. Happy to discuss any practical questions about using them.</p>
+    <div class="grid3" style="margin-top:10px;">
+      <div class="card"><h4>🔍 Perplexity</h4><p>perplexity.ai — the free tier has a daily limit on Pro Search</p></div>
+      <div class="card"><h4>📚 NotebookLM</h4><p>notebooklm.google.com — free to use</p></div>
+      <div class="card"><h4>💬 Ask Gemini</h4><p>Built into Chrome's side panel, free to use</p></div>
+      <div class="card"><h4>🎨 Nano Banana</h4><p>Gemini's "Create image" — the Pro model renders text more accurately</p></div>
+      <div class="card"><h4>📖 Gemini Storybook</h4><p>Gems → Storybook in gemini.google.com — free to use, requires being signed in and 18+</p></div>
+      <div class="card"><h4>🎮 Gemini Canvas</h4><p>Select Canvas in the Gemini prompt box — free tier allows one webpage generation per conversation</p></div>
+    </div>
+  </div>
+  <footer class="speaker"><span>Speaker: ${SPEAKER_NAME}</span><span>※ Tools update quickly — actual features may vary on the day</span></footer>
+  `
+});
+
+/* ---------------- engine ---------------- */
+let current = 0;
+const deck = document.getElementById('deck');
+const toc = document.getElementById('toc');
+
+slides.forEach((s,i)=>{
+  const sec = document.createElement('section');
+  sec.className = 'slide' + (s.isDemo ? ' demo-slide' : '');
+  sec.id = 'slide-'+i;
+  sec.innerHTML = s.html;
+  deck.appendChild(sec);
+});
+
+let tocHtml = '<h3>Contents</h3>';
+slides.forEach((s,i)=>{
+  tocHtml += `<div class="toc-item" onclick="jump(${i})"><span class="toc-num">${String(i+1).padStart(2,'0')}</span><span>${s.title}</span></div>`;
+});
+toc.innerHTML = tocHtml;
+
+function render(){
+  document.querySelectorAll('.slide').forEach((el,i)=>{
+    el.classList.toggle('active', i===current);
+  });
+  document.getElementById('page-counter').textContent = (current+1)+' / '+slides.length;
+  document.getElementById('topbar-fill').style.width = ((current+1)/slides.length*100)+'%';
+  document.getElementById('prev-btn').classList.toggle('disabled', current===0);
+  document.getElementById('next-btn').classList.toggle('disabled', current===slides.length-1);
+}
+function go(d){
+  const next = current+d;
+  if(next<0 || next>=slides.length) return;
+  current = next;
+  render();
+}
+function jump(i){
+  current = i;
+  render();
+  toggleTOC();
+}
+function toggleTOC(){
+  document.getElementById('toc').classList.toggle('open');
+  document.getElementById('toc-overlay').classList.toggle('show');
+}
+function copyPrompt(btn){
+  const p = btn.parentElement.querySelector('p');
+  navigator.clipboard.writeText(p.textContent).then(()=>{
+    const old = btn.textContent;
+    btn.textContent = 'Copied';
+    setTimeout(()=>btn.textContent = old, 1500);
+  });
+}
+render();
+</script>
+</body>
+</html>
