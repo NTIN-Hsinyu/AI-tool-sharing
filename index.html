@@ -294,26 +294,20 @@ slides.push({
   html:`
   <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
     <div class="eyebrow">${EVENT_LABEL}</div>
-    <h1 class="cover-title">Five AI Teammates<br>From Lesson Prep to Interactive Teaching Materials</h1>
-    <p class="cover-sub">Real, working examples using Gemini, Perplexity, and NotebookLM in nursing education.</p>
+    <h1 class="cover-title">From Question to Practice<br>AI Tools for Nursing Research &amp; Teaching</h1>
+    <p style="font-size:1.3rem; font-weight:700; color:var(--primary); margin:4px 0 18px;">${SPEAKER_NAME}</p>
     <div class="cover-tags">
       <span class="tool-badge">
-        <span class="tool-icon" style="background:linear-gradient(135deg,#4F7CFE,#B24FE0 50%,#FF6B5B);">
-          <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2 C12.8 8 16 11.2 22 12 C16 12.8 12.8 16 12 22 C11.2 16 8 12.8 2 12 C8 11.2 11.2 8 12 2 Z"/></svg>
+        <span class="tool-icon" style="background:var(--gold);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 4 L12 12 L17 15" stroke-linecap="round"/></svg>
         </span>
-        Gemini
+        Research Track
       </span>
       <span class="tool-badge">
-        <span class="tool-icon" style="background:#20808D;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M12 3 L12 21 M3 8.5 L21 15.5 M21 8.5 L3 15.5" stroke-linecap="round"/></svg>
+        <span class="tool-icon" style="background:var(--accent);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H12V20H5.5C4.7 20 4 19.3 4 18.5V5.5Z"/><path d="M12 4H18.5C19.3 4 20 4.7 20 5.5V18.5C20 19.3 19.3 20 18.5 20H12" /></svg>
         </span>
-        Perplexity
-      </span>
-      <span class="tool-badge">
-        <span class="tool-icon" style="background:linear-gradient(135deg,#4285F4,#9B72CB 50%,#EA4335);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H12V20H5.5C4.7 20 4 19.3 4 18.5V5.5Z"/><path d="M12 4H18.5C19.3 4 20 4.7 20 5.5V18.5C20 19.3 19.3 20 18.5 20H12" /><path d="M14.5 8H17.5M14.5 11H17.5M14.5 14H17.5" stroke-linecap="round"/></svg>
-        </span>
-        NotebookLM
+        Teaching Track
       </span>
     </div>
   </div>
@@ -323,20 +317,75 @@ slides.push({
 
 /* 2. Opening */
 slides.push({
-  title:"Opening: What We're Solving",
+  title:"Opening: From Question to Practice",
   html:`
   <div class="eyebrow">Opening</div>
-  <h2 class="title">Lesson Prep, Materials, Practice Questions — AI Can Help at Every Step</h2>
-  <p class="lede">Everyday nursing teaching keeps hitting the same walls: too much literature and guidance to read before class;
-  teaching materials and infographics take time to design; practice questions and interactive scenarios need constant updating.
-  The six tools shared today each address one of these pain points, and every workflow here is something I've actually used and confirmed works.</p>
+  <h2 class="title">From Question to Practice</h2>
+  <p class="lede">Time is the one resource none of us have enough of — but that's no reason to settle for less innovative research or less engaging teaching. Used well, AI is what lets you turn limited time into a rich, innovative outcome, in both your research and your classroom.</p>
+  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:18px 0;">
+    <div class="card" style="flex:1 1 200px; text-align:center; background:var(--primary-soft); border:none;">
+      <h4 style="margin-bottom:4px;">⏱️ Limited Time</h4>
+      <p style="font-size:.9rem;">The constraint we all actually work under</p>
+    </div>
+    <div style="font-size:1.8rem; color:var(--line); flex:0 0 auto;">→</div>
+    <div class="card" style="flex:1 1 200px; text-align:center; background:var(--accent-soft); border:none;">
+      <h4 style="margin-bottom:4px;">🤖 AI as a Teammate</h4>
+      <p style="font-size:.9rem;">What today's workshop is actually about</p>
+    </div>
+    <div style="font-size:1.8rem; color:var(--line); flex:0 0 auto;">→</div>
+    <div class="card" style="flex:1 1 200px; text-align:center; background:var(--gold-soft); border:none;">
+      <h4 style="margin-bottom:4px;">✨ Rich, Innovative Outcome</h4>
+      <p style="font-size:.9rem;">What we're actually after</p>
+    </div>
+  </div>
   ${pulseSVG(1400)}
-  <div class="grid3" style="margin-top:10px;">
-    <div class="card"><h4>📚 Too Much to Read</h4><p>Literature, guidelines, and textbook chapters pile up — reading them one by one takes too long.</p></div>
+  <p style="font-weight:700; margin:14px 0 6px; color:var(--gold);">Research Track — Where the Time Goes</p>
+  <div class="grid3">
+    <div class="card"><h4>🧭 Hard to Formulate a Question</h4><p>A clinical or pedagogical concern stays too vague to search until it's broken into PICO.</p></div>
+    <div class="card"><h4>📚 Literature Review Takes Forever</h4><p>Screening, reading, and cross-checking papers one by one eats up weeks.</p></div>
+    <div class="card"><h4>📊 Data Analysis Feels Out of Reach</h4><p>SPSS/R syntax is a barrier even when the statistical logic is clear.</p></div>
+  </div>
+  <p style="font-weight:700; margin:18px 0 6px; color:var(--accent);">Teaching Track — Where the Time Goes</p>
+  <div class="grid3">
+    <div class="card"><h4>📚 Too Much to Read</h4><p>Guidelines and textbook chapters pile up before class — reading them one by one takes too long.</p></div>
     <div class="card"><h4>🎨 Materials Take Too Long</h4><p>Infographics, slides, and interactive materials all take time to design and produce.</p></div>
     <div class="card"><h4>📝 Practice Questions Never End</h4><p>Scenario-based questions and pop quizzes need constant updates, and grading adds to the load.</p></div>
   </div>
   <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part 0 · Opening</span></footer>
+  `
+});
+
+/* 2b. Agenda */
+slides.push({
+  title:"Agenda",
+  html:`
+  <div class="eyebrow">Today's Plan</div>
+  <h2 class="title">Agenda: Research Track &amp; Teaching Track</h2>
+  <p class="lede">The morning stays in the Research Track; the afternoon finishes the Research Track, then moves into the Teaching Track.</p>
+  <div class="card" style="margin-top:6px; border-left:4px solid var(--gold);">
+    <h4 style="color:var(--gold);">Research Track — Part 1</h4>
+    <div class="grid3" style="margin-top:10px;">
+      <div class="card"><h4>Ask</h4><p>PICO framework — turn a vague concern into a searchable question</p></div>
+      <div class="card"><h4>Acquire</h4><p>Literature search: Perplexity, Elicit, Consensus</p></div>
+      <div class="card"><h4>Organize</h4><p>NotebookLM — build a cited knowledge base</p></div>
+    </div>
+  </div>
+  <div class="card" style="border-left:4px solid var(--gold);">
+    <h4 style="color:var(--gold);">Research Track — Part 2</h4>
+    <div class="grid2" style="margin-top:10px;">
+      <div class="card"><h4>Analyze</h4><p>Claude — statistics and charts from your own spreadsheet</p></div>
+      <div class="card"><h4>Polish</h4><p>Grammarly &amp; QuillBot — manuscript grammar and rewriting</p></div>
+    </div>
+  </div>
+  <div class="card" style="border-left:4px solid var(--accent);">
+    <h4 style="color:var(--accent);">Teaching Track</h4>
+    <div class="grid3" style="margin-top:10px;">
+      <div class="card"><h4>Quick Prep</h4><p>Ask Gemini, Nano Banana, Gemini Storybook</p></div>
+      <div class="card"><h4>Interactive Materials</h4><p>Gemini Canvas — case-study demos</p></div>
+      <div class="card"><h4>Wrap-Up</h4><p>Integrated workflow, ethics &amp; guidelines, Q&amp;A</p></div>
+    </div>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part 0 · Agenda</span></footer>
   `
 });
 
@@ -345,29 +394,52 @@ slides.push({
   title:"Tool Map Overview",
   html:`
   <div class="eyebrow">Overview</div>
-  <h2 class="title">Six Tools, Three Roles</h2>
-  <p class="lede">You don't need to master all six — knowing which one to reach for makes everything else click.</p>
+  <h2 class="title">Today's Toolkit: Research Track &amp; Teaching Track</h2>
+  <p class="lede">You don't need to master everything today — knowing which one to reach for makes everything else click.</p>
 
   <div class="toolmap-group">
-    <div class="toolmap-group-label">A | Research Pair — Confirm the Latest Evidence, Then Organize It</div>
+    <div class="toolmap-group-label">Research Track — Ask</div>
     <div class="tool-row">
-      <div class="tool-chip"><span class="emoji">🔍</span><div><strong>Perplexity</strong><span>AI search with cited sources — check literature and evidence levels</span></div></div>
-      <div class="tool-chip"><span class="emoji">📚</span><div><strong>NotebookLM</strong><span>Download what Perplexity finds, then turn it into a Q&A knowledge base, mind maps, and review resources</span></div></div>
+      <div class="tool-chip"><span class="emoji">🧭</span><div><strong>PICO Framework</strong><span>Not a tool — a way of turning a vague concern into a searchable question</span></div></div>
+      <div class="tool-chip" style="visibility:hidden"></div><div class="tool-chip" style="visibility:hidden"></div>
+    </div>
+  </div>
+  <div class="toolmap-group">
+    <div class="toolmap-group-label">Research Track — Acquire: Literature Search</div>
+    <div class="tool-row">
+      <div class="tool-chip"><span class="emoji">🔍</span><div><strong><a href="https://www.perplexity.ai" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline dotted;">Perplexity</a></strong><span>Broad, fact-checked search with an Academic mode</span></div></div>
+      <div class="tool-chip"><span class="emoji">📄</span><div><strong><a href="https://elicit.com" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline dotted;">Elicit</a></strong><span>Academic-database search, extracts study data into tables</span></div></div>
+      <div class="tool-chip"><span class="emoji">✅</span><div><strong><a href="https://consensus.app" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline dotted;">Consensus</a></strong><span>Yes/No/Possibly evidence snapshot for a quick gut-check</span></div></div>
+    </div>
+  </div>
+  <div class="toolmap-group">
+    <div class="toolmap-group-label">Research Track — Organize</div>
+    <div class="tool-row">
+      <div class="tool-chip"><span class="emoji">📚</span><div><strong><a href="https://notebooklm.google.com" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline dotted;">NotebookLM</a></strong><span>Turns everything you found into a cited Q&A knowledge base</span></div></div>
+      <div class="tool-chip" style="visibility:hidden"></div><div class="tool-chip" style="visibility:hidden"></div>
+    </div>
+  </div>
+  <div class="toolmap-group">
+    <div class="toolmap-group-label">Research Track — Analyze &amp; Polish</div>
+    <div class="tool-row">
+      <div class="tool-chip"><span class="emoji">📊</span><div><strong><a href="https://claude.ai" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline dotted;">Claude</a></strong><span>Runs real statistics and renders charts from an uploaded spreadsheet</span></div></div>
+      <div class="tool-chip"><span class="emoji">✍️</span><div><strong><a href="https://www.grammarly.com" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline dotted;">Grammarly</a> &amp; <a href="https://quillbot.com" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline dotted;">QuillBot</a></strong><span>Manuscript grammar check and rewrite/paraphrase</span></div></div>
       <div class="tool-chip" style="visibility:hidden"></div>
     </div>
   </div>
+
   <div class="toolmap-group">
-    <div class="toolmap-group-label">B | Quick Prep — Ask and Generate On the Fly</div>
+    <div class="toolmap-group-label">Teaching Track — Quick Prep</div>
     <div class="tool-row">
-      <div class="tool-chip"><span class="emoji">💬</span><div><strong>Ask Gemini</strong><span>Browser side panel — ask questions about any webpage, video, or PDF on the spot</span></div></div>
-      <div class="tool-chip"><span class="emoji">🎨</span><div><strong>Nano Banana</strong><span>Gemini's image generator — infographics and posters with accurate embedded text</span></div></div>
-      <div class="tool-chip"><span class="emoji">📖</span><div><strong>Gemini Storybook</strong><span>Turns a prompt into a 10-page illustrated story with narration</span></div></div>
+      <div class="tool-chip"><span class="emoji">💬</span><div><strong><a href="https://gemini.google.com/overview/gemini-in-chrome/" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline dotted;">Ask Gemini</a></strong><span>Browser side panel — ask questions about any webpage, video, or PDF on the spot</span></div></div>
+      <div class="tool-chip"><span class="emoji">🎨</span><div><strong><a href="https://gemini.google.com" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline dotted;">Nano Banana</a></strong><span>Gemini's image generator — infographics and posters with accurate embedded text</span></div></div>
+      <div class="tool-chip"><span class="emoji">📖</span><div><strong><a href="https://gemini.google.com" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline dotted;">Gemini Storybook</a></strong><span>Turns a prompt into a 10-page illustrated story with narration</span></div></div>
     </div>
   </div>
   <div class="toolmap-group">
-    <div class="toolmap-group-label">C | Interactive Materials</div>
+    <div class="toolmap-group-label">Teaching Track — Interactive Materials</div>
     <div class="tool-row">
-      <div class="tool-chip"><span class="emoji">🎮</span><div><strong>Gemini Canvas</strong><span>Turn text prompts into interactive web games and simulation tools</span></div></div>
+      <div class="tool-chip"><span class="emoji">🎮</span><div><strong><a href="https://gemini.google.com" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline dotted;">Gemini Canvas</a></strong><span>Turn text prompts into interactive web games and simulation tools</span></div></div>
       <div class="tool-chip" style="visibility:hidden"></div><div class="tool-chip" style="visibility:hidden"></div>
     </div>
   </div>
@@ -375,13 +447,327 @@ slides.push({
   `
 });
 
+/* 3b-1. PICO: 5A's roadmap (interactive circular diagram) */
+slides.push({
+  title:"Research Track | The 5 A's Roadmap",
+  html:`
+  <div class="badge gold">RESEARCH TRACK | ASK: FORMULATING A SEARCHABLE QUESTION</div>
+  <h2 class="title" style="font-size:2.1rem;">🧭 The 5 A's of Evidence-Based Practice</h2>
+  <p class="lede">Every research or EBP project starts by turning a vague clinical curiosity into a question you can actually search. Click a step below to see what happens there.</p>
+  <div style="display:flex; gap:24px; flex-wrap:wrap; align-items:center; justify-content:center;">
+    <svg viewBox="0 0 620 620" style="width:100%; max-width:520px; flex-shrink:0;">
+      <defs>
+        <marker id="ebpArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--ink)"/>
+        </marker>
+      </defs>
+      <path d="M 500.2,248.2 A 200,200 0 0 1 500.2,371.8" fill="none" stroke="var(--ink)" stroke-width="4" marker-end="url(#ebpArrow)"/>
+      <path d="M 427.6,471.8 A 200,200 0 0 1 310,510" fill="none" stroke="var(--ink)" stroke-width="4" marker-end="url(#ebpArrow)"/>
+      <path d="M 192.4,471.8 A 200,200 0 0 1 119.8,371.8" fill="none" stroke="var(--ink)" stroke-width="4" marker-end="url(#ebpArrow)"/>
+      <path d="M 119.8,248.2 A 200,200 0 0 1 192.4,148.2" fill="none" stroke="var(--ink)" stroke-width="4" marker-end="url(#ebpArrow)"/>
+      <path d="M 310,110 A 200,200 0 0 1 427.6,148.2" fill="none" stroke="var(--ink)" stroke-width="4" marker-end="url(#ebpArrow)"/>
+      <line x1="383" y1="257" x2="420" y2="230" stroke="var(--danger)" stroke-width="4" marker-end="url(#ebpArrow)"/>
+
+      <circle cx="310" cy="310" r="90" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="4"/>
+      <text x="310" y="300" text-anchor="middle" font-size="20" font-weight="700" fill="var(--danger)" font-family="Noto Serif TC">Assessment</text>
+      <text x="310" y="323" text-anchor="middle" font-size="14" fill="var(--ink-soft)" font-family="Noto Serif TC">Clinical decision</text>
+      <text x="310" y="341" text-anchor="middle" font-size="14" fill="var(--ink-soft)" font-family="Noto Serif TC">required</text>
+
+      <g id="ebp-ask" class="ebp-step" style="cursor:pointer;" onclick="ebpStep(this,'ASK','①','Convert the information need into an answerable clinical question — this is exactly what PICO does.','var(--primary)')">
+        <circle cx="472" cy="192" r="64" fill="var(--primary-soft)" stroke="var(--primary)" stroke-width="4"/>
+        <text x="472" y="182" text-anchor="middle" font-size="22" font-weight="700" fill="var(--primary)" font-family="Noto Serif TC">①</text>
+        <text x="472" y="203" text-anchor="middle" font-size="16" font-weight="700" fill="var(--primary)" font-family="Noto Serif TC">Ask</text>
+        <text x="472" y="220" text-anchor="middle" font-size="10" fill="var(--primary)" font-family="Noto Serif TC">click me</text>
+      </g>
+
+      <g id="ebp-acquire" class="ebp-step" style="cursor:pointer;" onclick="ebpStep(this,'ACQUIRE','②','Track down the best available evidence for answering the question — Perplexity, Elicit, and Consensus, later this morning.','var(--accent)')">
+        <circle cx="472" cy="428" r="64" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="4"/>
+        <text x="472" y="418" text-anchor="middle" font-size="22" font-weight="700" fill="var(--accent)" font-family="Noto Serif TC">②</text>
+        <text x="472" y="439" text-anchor="middle" font-size="16" font-weight="700" fill="var(--accent)" font-family="Noto Serif TC">Acquire</text>
+        <text x="472" y="456" text-anchor="middle" font-size="10" fill="var(--accent)" font-family="Noto Serif TC">click me</text>
+      </g>
+
+      <g id="ebp-appraise" class="ebp-step" style="cursor:pointer;" onclick="ebpStep(this,'APPRAISE','③','Critically appraise the evidence you found for validity, impact, and applicability to your own setting.','var(--gold)')">
+        <circle cx="248" cy="500" r="64" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="4"/>
+        <text x="248" y="490" text-anchor="middle" font-size="22" font-weight="700" fill="var(--gold)" font-family="Noto Serif TC">③</text>
+        <text x="248" y="511" text-anchor="middle" font-size="16" font-weight="700" fill="var(--gold)" font-family="Noto Serif TC">Appraise</text>
+        <text x="248" y="528" text-anchor="middle" font-size="10" fill="var(--gold)" font-family="Noto Serif TC">click me</text>
+      </g>
+
+      <g id="ebp-apply" class="ebp-step" style="cursor:pointer;" onclick="ebpStep(this,'APPLY','④','Integrate the evidence into your actual clinical or teaching decisions.','var(--pulse)')">
+        <circle cx="110" cy="310" r="64" fill="#E4F2EF" stroke="var(--pulse)" stroke-width="4"/>
+        <text x="110" y="300" text-anchor="middle" font-size="22" font-weight="700" fill="var(--pulse)" font-family="Noto Serif TC">④</text>
+        <text x="110" y="321" text-anchor="middle" font-size="16" font-weight="700" fill="var(--pulse)" font-family="Noto Serif TC">Apply</text>
+        <text x="110" y="338" text-anchor="middle" font-size="10" fill="var(--pulse)" font-family="Noto Serif TC">click me</text>
+      </g>
+
+      <g id="ebp-audit" class="ebp-step" style="cursor:pointer;" onclick="ebpStep(this,'AUDIT','⑤','Evaluate how steps 1–4 went, and look for ways to improve the process next time.','var(--danger)')">
+        <circle cx="248" cy="120" r="64" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="4"/>
+        <text x="248" y="110" text-anchor="middle" font-size="22" font-weight="700" fill="var(--danger)" font-family="Noto Serif TC">⑤</text>
+        <text x="248" y="131" text-anchor="middle" font-size="16" font-weight="700" fill="var(--danger)" font-family="Noto Serif TC">Audit</text>
+        <text x="248" y="148" text-anchor="middle" font-size="10" fill="var(--danger)" font-family="Noto Serif TC">click me</text>
+      </g>
+    </svg>
+    <div style="flex:1; min-width:260px;">
+      <div id="ebp-detail" class="card" style="min-height:140px; border-left:5px solid var(--line); transition:border-color .2s;">
+        <h4>Click a step to begin</h4>
+        <p>Start with ① Ask, or explore the steps in any order — each one shows what happens there and, where relevant, which tool we'll use today.</p>
+      </div>
+    </div>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Ask 1/9</span></footer>
+  `
+});
+
+/* 3b-2. PICO: components */
+slides.push({
+  title:"Research Track | PICO(T) Components",
+  html:`
+  <div class="badge gold">RESEARCH TRACK | ASK</div>
+  <h2 class="title" style="font-size:2.1rem;">🧩 Breaking a Question Into PICO(T)</h2>
+  <p class="lede">Foreground questions — the ones that drive an actual research or EBP project — break cleanly into these parts. "T" is optional and only added when timing matters.</p>
+  <div style="display:flex; flex-wrap:wrap; gap:14px;">
+    <div class="card" style="flex:1 1 150px;"><h4>P</h4><p><strong>Patient / Problem</strong><br>The patient or problem being addressed</p></div>
+    <div class="card" style="flex:1 1 150px;"><h4>I</h4><p><strong>Intervention</strong><br>The intervention or exposure being considered</p></div>
+    <div class="card" style="flex:1 1 150px;"><h4>C</h4><p><strong>Comparison</strong><br>The comparison intervention or exposure, when relevant</p></div>
+    <div class="card" style="flex:1 1 150px;"><h4>O</h4><p><strong>Outcome</strong><br>The clinical outcome(s) of interest</p></div>
+    <div class="card" style="flex:1 1 150px; opacity:.75;"><h4>T <span style="font-size:.7rem;">(optional)</span></h4><p><strong>Time</strong><br>Time needed to achieve the outcome(s)</p></div>
+  </div>
+  <div class="tip-box">
+    <h4>Sources</h4>
+    <p>Primary literature, evidence-extraction services, guidelines, systematic reviews. <span style="opacity:.7;">— Stillwell et al. (2010)</span></p>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Ask 2/9</span></footer>
+  `
+});
+
+/* 3b-2b. PICo: qualitative version */
+slides.push({
+  title:"Research Track | PICo — Qualitative Studies",
+  html:`
+  <div class="badge gold">RESEARCH TRACK | ASK</div>
+  <h2 class="title" style="font-size:2.1rem;">🗣️ PICo: The Qualitative Version</h2>
+  <p class="lede">When a study explores an experience rather than tests an intervention, PICO becomes PICo — there's no comparison group to define, so it's replaced with context.</p>
+  <div style="display:flex; flex-wrap:wrap; gap:14px;">
+    <div class="card" style="flex:1 1 220px;"><h4>P</h4><p><strong>Patient / Problem</strong><br>The patient or problem being addressed</p></div>
+    <div class="card" style="flex:1 1 220px;"><h4>I</h4><p><strong>Phenomena of Interest</strong><br>The specific event, experience, feeling, or process being explored</p></div>
+    <div class="card" style="flex:1 1 220px;"><h4>Co</h4><p><strong>Context</strong><br>The setting, background circumstances, culture, or geographical location</p></div>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Ask 3/9</span></footer>
+  `
+});
+
+/* 3b-3. PICO: all templates in one scrollable slide */
+slides.push({
+  title:"Research Track | PICO(T) Templates",
+  html:`
+  <div class="badge gold">RESEARCH TRACK | ASK</div>
+  <h2 class="title" style="font-size:2.05rem;">📐 PICO(T) Templates by Question Type</h2>
+  <p class="lede">Five common templates for foreground questions, each with a different purpose.</p>
+  <div style="display:flex; flex-wrap:wrap; gap:14px;">
+    <div class="card" style="flex:1 1 260px;">
+      <h4>Intervention / Therapy</h4>
+      <p style="opacity:.75; margin-bottom:8px; font-size:.9rem;">Which treatment leads to the best outcome</p>
+      <p style="font-size:.92rem; line-height:1.7;">In <strong style="color:var(--primary);">patients with heart failure (P)</strong>, how does <strong style="color:var(--accent);">exercise (I)</strong> compared with <strong style="color:var(--gold);">no exercise (C)</strong> affect <strong style="color:var(--pulse);">quality of life (O)</strong> within the <strong style="color:var(--danger);">first year of diagnosis (T)</strong>?</p>
+    </div>
+    <div class="card" style="flex:1 1 260px;">
+      <h4>Etiology</h4>
+      <p style="opacity:.75; margin-bottom:8px; font-size:.9rem;">The greatest risk factors or causes of a condition</p>
+      <p style="font-size:.92rem; line-height:1.7;">Are <strong style="color:var(--primary);">healthy people (P)</strong> who <strong style="color:var(--accent);">smoke (I)</strong>, compared with those who <strong style="color:var(--gold);">do not smoke (C)</strong>, at greater risk for <strong style="color:var(--pulse);">lung cancer (O)</strong>?</p>
+    </div>
+    <div class="card" style="flex:1 1 260px;">
+      <h4>Diagnosis / Diagnostic Test</h4>
+      <p style="opacity:.75; margin-bottom:8px; font-size:.9rem;">Which test is more accurate and precise in diagnosing a condition</p>
+      <p style="font-size:.92rem; line-height:1.7;">In <strong style="color:var(--primary);">patients with heart failure (P)</strong>, are <strong style="color:var(--accent);">troponins (I)</strong> compared with <strong style="color:var(--gold);">CK-MB (C)</strong> more accurate in diagnosing <strong style="color:var(--pulse);">acute coronary syndrome (O)</strong>?</p>
+    </div>
+    <div class="card" style="flex:1 1 260px;">
+      <h4>Prognosis / Prediction</h4>
+      <p style="opacity:.75; margin-bottom:8px; font-size:.9rem;">The clinical course over time and likely complications of a condition</p>
+      <p style="font-size:.92rem; line-height:1.7;">In <strong style="color:var(--primary);">patients with diabetes (P)</strong>, how does <strong style="color:var(--accent);">HbA1c &lt; 7 (I)</strong> compared with <strong style="color:var(--gold);">HbA1c ≥ 7 (C)</strong> influence <strong style="color:var(--pulse);">nephropathy (O)</strong> over <strong style="color:var(--danger);">5 years (T)</strong>?</p>
+    </div>
+    <div class="card" style="flex:1 1 260px;">
+      <h4>Meaning</h4>
+      <p style="opacity:.75; margin-bottom:8px; font-size:.9rem;">Understanding the meaning of an experience for an individual, group, or community</p>
+      <p style="font-size:.92rem; line-height:1.7;">How do <strong style="color:var(--primary);">undergraduate students (P)</strong> <strong style="color:var(--accent);">attending the conference (I)</strong> perceive <strong style="color:var(--gold);">positive experience (Co)</strong> during the clinical practicum?</p>
+    </div>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:14px; margin-top:10px; font-size:.85rem;">
+    <span><strong style="color:var(--primary);">P</strong> Patient/Problem</span>
+    <span><strong style="color:var(--accent);">I</strong> Intervention</span>
+    <span><strong style="color:var(--gold);">C/Co</strong> Comparison/Context</span>
+    <span><strong style="color:var(--pulse);">O</strong> Outcome</span>
+    <span><strong style="color:var(--danger);">T</strong> Time</span>
+  </div>
+  <p style="text-align:right; opacity:.6; font-size:.85rem; margin-top:6px;">— Stillwell et al. (2010)</p>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Ask 4/9</span></footer>
+  `
+});
+slides.push({
+  title:"Research Track | From Scenario to PICO",
+  html:`
+  <div class="badge gold">RESEARCH TRACK | ASK</div>
+  <h2 class="title" style="font-size:2.1rem;">🔍 From a Clinical Scenario to a PICO Question</h2>
+  <p class="lede">A vague concern gets sharpened, one piece at a time, into a searchable question.</p>
+  <div class="card">
+    <h4>Scenario</h4>
+    <p style="font-size:1.05rem;">A 2-year-old boy presents with recurrent ear infections and has been on amoxicillin for several weeks. His mother is worried about the effects of long-term antibiotic use, and wonders whether a different antibiotic might work better with fewer side effects.</p>
+  </div>
+  <div class="grid2" style="margin-top:18px;">
+    <div class="card"><h4 style="color:var(--primary);">P</h4><p>Children with acute otitis media</p></div>
+    <div class="card"><h4 style="color:var(--accent);">I</h4><p>Cefuroxime</p></div>
+    <div class="card"><h4 style="color:var(--gold);">C</h4><p>Amoxicillin</p></div>
+    <div class="card"><h4 style="color:var(--pulse);">O</h4><p>Reduction in duration of symptoms, improvement of infection, and reduced risk of developing antibiotic resistance</p></div>
+  </div>
+  <p style="text-align:right; opacity:.6; font-size:.8rem; margin-top:6px;">— Adapted from Aslam &amp; Emmanuel (2010)</p>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Ask 5/9</span></footer>
+  `
+});
+
+/* 3b-5. PICO: hands-on practice */
+slides.push({
+  title:"Research Track | Hands-On: Write &amp; Expand Your PICO",
+  isDemo:true,
+  html:`
+  <div class="badge gold">RESEARCH TRACK | ASK → ACQUIRE</div>
+  <h2 class="title" style="font-size:2.1rem; margin-bottom:14px;">✍️ Your Turn: Write a PICO, Then Expand It</h2>
+  <p class="lede" style="margin-bottom:18px;">Two steps: first write your own PICO question (use the teaching-method scenario, or a topic from your own teaching), then hand it to a generative AI to expand into searchable keywords.</p>
+  <div class="grid2">
+    <div class="card">
+      <h4>Step 1 · Write Your PICO</h4>
+      <ul class="steps">
+        <li><div class="step-num">1</div><div class="stext"><strong>Pick a scenario</strong><span>A question from your own experiences or observations</span></div></li>
+        <li><div class="step-num">2</div><div class="stext"><strong>Fill in P / I / C / O</strong><span>Keep each part to a short phrase, not a full sentence</span></div></li>
+        <li><div class="step-num">3</div><div class="stext"><strong>Write it as one question</strong><span>Use the template from a few pages back</span></div></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Step 2 · Expand With AI</h4>
+      <p>Paste your PICO into ChatGPT (or any chat AI) and ask it to suggest free-text synonyms and controlled-vocabulary terms (MeSH / Emtree) for each element — in both Chinese and English if you search bilingual databases.</p>
+    </div>
+  </div>
+  <div class="prompt-box">
+    <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+    <div class="ptitle">📎 PROMPT EXAMPLE</div>
+    <p>You are an experienced medical librarian skilled in systematic-review literature searching. Here is my PICO question: [paste your PICO question]. Please suggest, for each PICO element: (1) free-text synonyms including singular/plural forms and US/UK spelling variants, and (2) candidate MeSH controlled-vocabulary terms to verify. Present the results in a table organized by PICO element.</p>
+  </div>
+  <div class="warn-box" style="margin-top:16px;">
+    <h4>⚠️ Always Verify</h4>
+    <p>Treat AI-suggested MeSH/Emtree terms as a starting point — confirm each one against the database's own thesaurus before relying on it in a real search strategy.</p>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Ask 6/9</span></footer>
+  `
+});
+
+/* 3b-6. PICO: extend to research question */
+/* 3b-7. PICO: from elements to candidate questions */
+slides.push({
+  title:"Research Track | Transfer PICO Question to Candidate Research Questions",
+  html:`
+  <div class="badge gold">RESEARCH TRACK | ASK</div>
+  <h2 class="title" style="font-size:1.85rem;">🌱 Transfer PICO Question to Candidate Research Questions</h2>
+  <p class="lede">Same case, same PICO elements as before — the same set of elements can branch into several different research questions, depending on which angle you pursue.</p>
+  <div class="card" style="padding:14px 18px; margin-bottom:4px;">
+    <p style="font-size:.85rem; line-height:1.8; margin:0;">
+      <strong style="color:var(--primary);">P</strong> Children with acute otitis media &nbsp;·&nbsp;
+      <strong style="color:var(--accent);">I</strong> Cefuroxime &nbsp;·&nbsp;
+      <strong style="color:var(--gold);">C</strong> Amoxicillin &nbsp;·&nbsp;
+      <strong style="color:var(--pulse);">O</strong> Reduction in symptoms, improved infection, reduced resistance risk
+    </p>
+  </div>
+  <div style="display:flex; flex-wrap:wrap; gap:16px; margin-top:10px;">
+    <div class="card" style="flex:1 1 280px; border-left:5px solid var(--primary);">
+      <h4 style="color:var(--primary);">Therapy</h4>
+      <p style="font-size:1.05rem; line-height:1.75;">In <strong style="color:var(--primary);">children with acute otitis media</strong>, is <strong style="color:var(--accent);">cefuroxime</strong> more effective than <strong style="color:var(--gold);">amoxicillin</strong> at <strong style="color:var(--pulse);">reducing the duration of symptoms</strong>?</p>
+    </div>
+    <div class="card" style="flex:1 1 280px; border-left:5px solid var(--accent);">
+      <h4 style="color:var(--accent);">Etiology / Harm</h4>
+      <p style="font-size:1.05rem; line-height:1.75;">Does <strong style="color:var(--accent);">long-term amoxicillin use</strong> increase <strong style="color:var(--pulse);">the risk of developing antibiotic resistance</strong> in <strong style="color:var(--primary);">these children</strong>?</p>
+    </div>
+    <div class="card" style="flex:1 1 280px; border-left:5px solid var(--gold);">
+      <h4 style="color:var(--gold);">Prognosis</h4>
+      <p style="font-size:1.05rem; line-height:1.75;">After repeated antibiotic therapy, do <strong style="color:var(--primary);">children</strong> who go on to <strong style="color:var(--accent);">surgical treatment</strong> have <strong style="color:var(--pulse);">better outcomes</strong>?</p>
+    </div>
+  </div>
+  <p style="text-align:right; opacity:.6; font-size:.8rem; margin-top:10px;">— Adapted from Aslam &amp; Emmanuel (2010)</p>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Ask 7/9</span></footer>
+  `
+});
+
+/* 3b-8. PICO: FINERMAPS criteria */
+slides.push({
+  title:"Research Track | Selecting the Best Question: FINERMAPS",
+  html:`
+  <div class="badge gold">RESEARCH TRACK | ASK</div>
+  <h2 class="title" style="font-size:1.95rem;">🎯 Selecting the Best Question: FINERMAPS</h2>
+  <p class="lede">With several candidate questions in hand, this expanded nine-part checklist helps screen for the one actually worth pursuing.</p>
+  <div style="display:flex; flex-wrap:wrap; gap:14px;">
+    <div class="card" style="flex:1 1 220px;"><h4>F — Feasible</h4><p>Enough time, staff, and funding; a manageable scope and an achievable sample size</p></div>
+    <div class="card" style="flex:1 1 220px;"><h4>I — Interesting</h4><p>Motivating enough for you and your collaborators to see it through</p></div>
+    <div class="card" style="flex:1 1 220px;"><h4>N — Novel</h4><p>Confirmed by a real literature search (this is exactly what Perplexity, Elicit, and Consensus are for)</p></div>
+    <div class="card" style="flex:1 1 220px;"><h4>E — Ethical</h4><p>Meets ethical guidelines and can pass IRB / regulatory review</p></div>
+    <div class="card" style="flex:1 1 220px;"><h4>R — Relevant</h4><p>Has real influence on clinical or educational practice, or on health/education policy</p></div>
+    <div class="card" style="flex:1 1 220px;"><h4>M — Manageable</h4><p>Similar to feasibility, but focused specifically on whether you personally can carry the project through</p></div>
+    <div class="card" style="flex:1 1 220px;"><h4>A — Appropriate</h4><p>Logically and scientifically fits your community and institution</p></div>
+    <div class="card" style="flex:1 1 220px;"><h4>P — Potential Value &amp; Publishable</h4><p>Meaningful enough to justify the resources, and positioned within a context open to evidence-based change</p></div>
+    <div class="card" style="flex:1 1 220px;"><h4>S — Systematic</h4><p>Follows a structured, well-defined sequence of steps — without ruling out creative thinking</p></div>
+  </div>
+  <p style="text-align:right; opacity:.6; font-size:.8rem; margin-top:6px;">— FINER: Hulley et al., cited in Aslam &amp; Emmanuel (2010) · MAPS extension: Ratan, Anand &amp; Ratan (2019)</p>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Ask 8/9</span></footer>
+  `
+});
+
+/* 3b-9. PICO: good vs bad research question examples */
+slides.push({
+  title:"Research Track | Good vs Bad Research Questions",
+  html:`
+  <div class="badge gold">RESEARCH TRACK | ASK</div>
+  <h2 class="title" style="font-size:1.95rem;">⚖️ Good vs. Bad Research Questions</h2>
+  <p class="lede">Seeing a weak question rewritten into a strong one is often more useful than any checklist.</p>
+  <div class="grid2">
+    <div class="card" style="border-left:4px solid var(--danger);">
+      <h4 style="color:var(--danger);">✗ Too Narrow</h4>
+      <p style="font-size:.9rem; opacity:.8; margin-bottom:6px;">"What is the malnutrition rate among schoolchildren in a given district?"</p>
+      <p style="font-size:.85rem;">Answerable with a single statistic — leaves no room for analysis or argument.</p>
+    </div>
+    <div class="card" style="border-left:4px solid var(--pulse);">
+      <h4 style="color:var(--pulse);">✓ Better</h4>
+      <p style="font-size:.9rem; opacity:.8; margin-bottom:6px;">"How does parental education level relate to malnutrition among schoolchildren in that district?"</p>
+      <p style="font-size:.85rem;">Specific enough to analyze, and opens up a real argument to be made.</p>
+    </div>
+    <div class="card" style="border-left:4px solid var(--danger);">
+      <h4 style="color:var(--danger);">✗ Unfocused</h4>
+      <p style="font-size:.9rem; opacity:.8; margin-bottom:6px;">"What are the effects of malnutrition on schoolchildren?"</p>
+      <p style="font-size:.85rem;">So broad that no single study's methodology could cover it.</p>
+    </div>
+    <div class="card" style="border-left:4px solid var(--pulse);">
+      <h4 style="color:var(--pulse);">✓ Better</h4>
+      <p style="font-size:.9rem; opacity:.8; margin-bottom:6px;">"How does malnutrition affect academic performance among elementary schoolchildren?"</p>
+      <p style="font-size:.85rem;">One clear, measurable focus that data collection can actually target.</p>
+    </div>
+    <div class="card" style="border-left:4px solid var(--danger);">
+      <h4 style="color:var(--danger);">✗ Too Simple</h4>
+      <p style="font-size:.9rem; opacity:.8; margin-bottom:6px;">"How are schools addressing childhood behavioral problems?"</p>
+      <p style="font-size:.85rem;">Answerable with a quick online search — no unique data or analysis required.</p>
+    </div>
+    <div class="card" style="border-left:4px solid var(--pulse);">
+      <h4 style="color:var(--pulse);">✓ Better</h4>
+      <p style="font-size:.9rem; opacity:.8; margin-bottom:6px;">"What effect do school intervention programs have on psychological health rates among middle-schoolers?"</p>
+      <p style="font-size:.85rem;">Requires real investigation and evaluation, not just a lookup.</p>
+    </div>
+  </div>
+  <p style="text-align:right; opacity:.6; font-size:.8rem; margin-top:6px;">— Adapted from Ratan, Anand &amp; Ratan (2019)</p>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Ask 9/9</span></footer>
+  `
+});
+
 /* 4. Perplexity */
 slides.push({
-  title:"A-1 | Perplexity",
+  title:"R-1 | Perplexity",
   html:`
-  <div class="badge">GROUP A | RESEARCH PAIR</div>
-  <h2 class="title">🔍 Literature Search With Cited Sources</h2>
-  <p class="lede">Perplexity fact-checks every answer in real time and links back to its sources, with a dedicated Academic mode for scholarly search — the first step: confirm what the latest evidence actually says.</p>
+  <div class="badge gold">RESEARCH TRACK | LITERATURE SEARCH</div>
+  <h2 class="title">🔍 Perplexity — Broad, Fact-Checked Search</h2>
+  <p style="margin:-6px 0 12px;"><a href="https://www.perplexity.ai" target="_blank" rel="noopener" style="color:var(--primary); font-weight:600; font-size:.85rem;">🔗 perplexity.ai</a></p>
+  <p class="lede">Perplexity fact-checks every answer in real time and links back to its sources, with a dedicated Academic mode for scholarly search — good for a fast first read on what's out there.</p>
   <div class="grid2">
     <div class="card">
       <h4>How To</h4>
@@ -393,41 +779,100 @@ slides.push({
       </ul>
     </div>
     <div>
-      <div class="card"><h4>Nursing Teaching Example</h4><p>When checking the latest fall-prevention guidelines or medication-related literature, Academic mode pulls several recent papers with source links and evidence levels in one search — saving the time of searching and cross-checking one by one.</p></div>
+      <div class="card"><h4>Research Example</h4><p>Checking what's already known about vertically integrated teaching methods and academic performance — Academic mode pulls several recent papers with source links and evidence levels in one search, saving the time of searching and cross-checking one by one.</p></div>
       <div class="prompt-box">
         <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
         <div class="ptitle">📎 PROMPT EXAMPLE</div>
-        <p>List academic studies published in the last five years on "acute myocardial infarction and mental health", including title, authors, abstract, source link, and evidence level.</p>
+        <p>List academic studies published in the last five years on "vertically integrated teaching methods and nursing student academic performance", including title, authors, abstract, source link, and evidence level.</p>
       </div>
     </div>
   </div>
-  <div class="tip-box">
-    <h4>➡️ Next Step</h4>
-    <p>Download the papers or export the findings, then bring them into NotebookLM on the next page to turn them into an organized, question-answerable knowledge base.</p>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Acquire 1/3</span></footer>
+  `
+});
+
+/* 4b. Elicit */
+slides.push({
+  title:"R-1b | Elicit",
+  html:`
+  <div class="badge gold">RESEARCH TRACK | LITERATURE SEARCH</div>
+  <h2 class="title">📄 Elicit — Academic Database, Structured Extraction</h2>
+  <p style="margin:-6px 0 12px;"><a href="https://elicit.com" target="_blank" rel="noopener" style="color:var(--primary); font-weight:600; font-size:.85rem;">🔗 elicit.com</a></p>
+  <p class="lede">Elicit searches 138M+ academic papers only — not the general web — and can pull each paper's method, sample size, and findings straight into a comparison table. Free plan: unlimited search, summaries, and chat with papers; up to 2 automated reports and 2 extraction columns per month.</p>
+  <div class="grid2">
+    <div class="card">
+      <h4>How To</h4>
+      <ul class="steps">
+        <li><div class="step-num">1</div><div class="stext"><strong>Type your research question</strong><span>Or paste keywords from your PICO breakdown</span></div></li>
+        <li><div class="step-num">2</div><div class="stext"><strong>Review the matched papers</strong><span>Each result shows a short AI summary of relevance</span></div></li>
+        <li><div class="step-num">3</div><div class="stext"><strong>Add extraction columns</strong><span>e.g. sample size, study design, outcome measure — Elicit fills them in from each paper</span></div></li>
+        <li><div class="step-num">4</div><div class="stext"><strong>Export the table</strong><span>Ready to paste into your literature review or a screening spreadsheet</span></div></li>
+      </ul>
+    </div>
+    <div>
+      <div class="card"><h4>Research Example</h4><p>Searching for studies on vertically integrated teaching methods, then adding columns for sample size, study design, and outcome measure — Elicit builds a side-by-side comparison table across every matched paper.</p></div>
+      <div class="prompt-box">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+        <div class="ptitle">📎 TABLE EXTRACTION PROMPT</div>
+        <p>Search: vertically integrated teaching methods and nursing student academic performance. Then add these extraction columns to build a comparison table across all matched papers: (1) Sample size, (2) Study design, (3) Teaching method compared against, (4) Outcome measure used, (5) Key finding.</p>
+      </div>
+    </div>
   </div>
-  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part A · 1/2</span></footer>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Acquire 2/3</span></footer>
+  `
+});
+
+/* 4c. Consensus */
+slides.push({
+  title:"R-1c | Consensus",
+  html:`
+  <div class="badge gold">RESEARCH TRACK | LITERATURE SEARCH</div>
+  <h2 class="title">✅ Consensus — Yes / No / Possibly, at a Glance</h2>
+  <p style="margin:-6px 0 12px;"><a href="https://consensus.app" target="_blank" rel="noopener" style="color:var(--primary); font-weight:600; font-size:.85rem;">🔗 consensus.app</a></p>
+  <p class="lede">Built for exactly this kind of question. Answers with a "Consensus Meter" showing how many studies agree, disagree, or are mixed — each backed by a citation. Free plan: unlimited basic search, plus a monthly quota of deeper AI analyses.</p>
+  <div class="grid2">
+    <div class="card">
+      <h4>How To</h4>
+      <ul class="steps">
+        <li><div class="step-num">1</div><div class="stext"><strong>Ask a yes/no research question</strong><span>Works best when phrased as a direct comparison</span></div></li>
+        <li><div class="step-num">2</div><div class="stext"><strong>Read the Consensus Meter</strong><span>Shows the proportion of studies that support, oppose, or are mixed</span></div></li>
+        <li><div class="step-num">3</div><div class="stext"><strong>Scan the cited studies</strong><span>Each contributing paper is listed with a one-line takeaway</span></div></li>
+        <li><div class="step-num">4</div><div class="stext"><strong>Use it as a gut-check</strong><span>A quick signal before committing time to Perplexity or Elicit for depth</span></div></li>
+      </ul>
+    </div>
+    <div>
+      <div class="card"><h4>Research Example</h4><p>A quick check on "does vertically integrated teaching improve academic performance" shows at a glance whether the existing literature leans supportive, mixed, or thin — useful for gauging the knowledge gap before designing your own study.</p></div>
+      <div class="prompt-box">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+        <div class="ptitle">📎 QUESTION EXAMPLE</div>
+        <p>Does vertically integrated teaching improve academic performance in nursing students compared with traditional lecture-based teaching?</p>
+      </div>
+    </div>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Acquire 3/3</span></footer>
   `
 });
 
 /* 5. NotebookLM */
 slides.push({
-  title:"A-2 | NotebookLM",
+  title:"R-2 | NotebookLM",
   html:`
-  <div class="badge">GROUP A | RESEARCH PAIR</div>
-  <h2 class="title">📚 Turn What You Found Into Teaching Resources</h2>
-  <p class="lede">NotebookLM answers strictly from the sources you upload and cites them — no fabrication. Download the papers Perplexity found, drop them in here, and they become a searchable, Q&A-ready knowledge base plus one-click study materials.</p>
+  <div class="badge gold">RESEARCH TRACK | ORGANIZE &amp; SYNTHESIZE</div>
+  <h2 class="title">📚 Build Your Own Knowledge Database</h2>
+  <p style="margin:-6px 0 12px;"><a href="https://notebooklm.google.com" target="_blank" rel="noopener" style="color:var(--primary); font-weight:600; font-size:.85rem;">🔗 notebooklm.google.com</a></p>
+  <p class="lede">NotebookLM answers strictly from the sources you upload and cites them — no fabrication. Download the papers you found with Perplexity, Elicit, and Consensus, drop them in here, and they become a searchable, Q&A-ready knowledge base plus one-click study materials.</p>
   <div class="grid2">
     <div class="card">
       <h4>How To</h4>
       <ul class="steps">
-        <li><div class="step-num">1</div><div class="stext"><strong>Create a notebook, add sources</strong><span>Upload the PDFs from Perplexity, paste links, or add a YouTube video as a source</span></div></li>
-        <li><div class="step-num">2</div><div class="stext"><strong>Ask questions (with citations)</strong><span>"What are the key points of this chapter?" — every answer is traceable to its source</span></div></li>
-        <li><div class="step-num">3</div><div class="stext"><strong>Generate materials with Studio</strong><span>One click to turn sources into the formats listed on the right</span></div></li>
+        <li><div class="step-num">1</div><div class="stext"><strong>Create a notebook, add sources</strong><span>Upload the PDFs from Perplexity, Elicit, and Consensus, paste links, or add a YouTube video as a source</span></div></li>
+        <li><div class="step-num">2</div><div class="stext"><strong>Ask questions (with citations)</strong><span>"What sample sizes and designs did these studies use?" — every answer is traceable to its source</span></div></li>
+        <li><div class="step-num">3</div><div class="stext"><strong>Generate materials with Studio</strong><span>One click to turn sources into the formats listed below</span></div></li>
       </ul>
     </div>
     <div class="card">
-      <h4>Nursing Teaching Example</h4>
-      <p>Upload long-term care assessment guidelines or the papers Perplexity just found, and ask NotebookLM to pull out what applies directly to your unit — every claim comes with a clickable source.</p>
+      <h4>Research Example</h4>
+      <p>Upload the papers you found on vertically-integrated teaching methods and academic performance, and ask NotebookLM to summarize study designs, sample sizes, and outcome measures across all of them — every claim comes with a clickable source, ready to feed into your literature review.</p>
     </div>
   </div>
   <div class="card" style="margin-top:20px;">
@@ -441,19 +886,89 @@ slides.push({
       <div class="card"><h4>📄 Reports</h4><p>Turns raw sources into a finished briefing doc, FAQ, or timeline in minutes.</p></div>
       <div class="card"><h4>📊 Slide Decks</h4><p>Auto-generates a presentation from your sources, exportable as PPTX.</p></div>
       <div class="card"><h4>📋 Data Tables</h4><p>Pulls scattered facts across sources into a structured, sortable table.</p></div>
-      <div class="card"><h4>🗂️ Flashcards &amp; Quizzes</h4><p>Grounded in your uploaded material only — good for student self-review, not generic trivia.</p></div>
+      <div class="card"><h4>🗂️ Flashcards &amp; Quizzes</h4><p>Grounded in your uploaded material only — good for drilling key terms and definitions from your literature, not generic trivia.</p></div>
     </div>
   </div>
-  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Part A · 2/2</span></footer>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Organize &amp; Synthesize</span></footer>
+  `
+});
+
+/* 5b. Quantitative analysis demo (Research Track) */
+slides.push({
+  title:"Research Track | Quantitative Analysis",
+  html:`
+  <div class="badge gold">RESEARCH TRACK | QUANTITATIVE ANALYSIS</div>
+  <h2 class="title" style="font-size:2.1rem; margin-bottom:6px;">📊 Turn a Spreadsheet Into Statistics &amp; Charts</h2>
+  <p style="margin:0 0 12px;"><a href="https://claude.ai" target="_blank" rel="noopener" style="color:var(--primary); font-weight:600; font-size:.85rem;">🔗 claude.ai</a></p>
+  <p class="lede" style="margin-bottom:20px;">Claude.ai's built-in code execution can run real statistical tests and render charts straight from an uploaded spreadsheet — no SPSS or R syntax required. Try it yourself with the fictional dataset below.</p>
+  <div class="grid2">
+    <div>
+      <div class="card">
+        <h4>How To</h4>
+        <ul class="steps">
+          <li><div class="step-num">1</div><div class="stext"><strong>Download the demo dataset</strong><span>A fictional Excel file — two groups' post-intervention knowledge scores</span></div></li>
+          <li><div class="step-num">2</div><div class="stext"><strong>Upload it to Claude.ai</strong><span>Attach the file in a new conversation</span></div></li>
+          <li><div class="step-num">3</div><div class="stext"><strong>Paste the analysis prompt</strong><span>Use the prompt on the right, or write your own</span></div></li>
+          <li><div class="step-num">4</div><div class="stext"><strong>Review the results</strong><span>Claude runs the test and renders charts directly in the chat</span></div></li>
+        </ul>
+      </div>
+      <div style="margin-top:18px;">
+        <a class="copy-btn" style="position:static; display:inline-block; padding:10px 22px; background:var(--primary); border-color:var(--primary);" href="PASTE-YOUR-GITHUB-PAGES-LINK-HERE.xlsx" download>⬇ Download Demo Dataset (.xlsx)</a>
+        <div style="margin-top:8px; font-size:.8rem; color:var(--accent);">↳ Replace this link once the file is uploaded to your GitHub Pages repo</div>
+      </div>
+    </div>
+    <div>
+      <div class="card"><h4>Scenario</h4><p>60 nursing students were taught through two different teaching methods — a vertically integrated curriculum vs. traditional lecture-based teaching. The dataset records each student's academic performance score (entirely fictional data, for demo purposes only).</p></div>
+      <div class="prompt-box">
+        <button class="copy-btn" onclick="copyPrompt(this)">Copy</button>
+        <div class="ptitle">📎 PROMPT EXAMPLE</div>
+        <p>This spreadsheet contains academic performance scores for two groups of nursing students: an Experimental group (vertically integrated teaching method) and a Control group (traditional lecture-based teaching). Please (1) report descriptive statistics for each group — mean, SD, and n; (2) run an independent-samples t-test comparing the two groups, including the p-value and Cohen's d effect size; and (3) create a bar chart comparing the group means with error bars, plus a boxplot showing each group's score distribution.</p>
+      </div>
+    </div>
+  </div>
+  <div class="warn-box" style="margin-top:16px;">
+    <h4>⚠️ Before You Try This With Real Data</h4>
+    <p>This demo uses entirely fictional data. Never upload real student records or patient data to a cloud AI tool — see the Ethics &amp; Guidelines page for the full principle.</p>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Quantitative Analysis</span></footer>
+  `
+});
+
+/* 5d. Grammarly & QuillBot */
+slides.push({
+  title:"Research Track | Grammarly &amp; QuillBot",
+  html:`
+  <div class="badge gold">RESEARCH TRACK | MANUSCRIPT POLISH</div>
+  <h2 class="title" style="font-size:2.05rem; margin-bottom:6px;">✍️ Polish Your Manuscript: Grammarly &amp; QuillBot</h2>
+  <p style="margin:0 0 12px;"><a href="https://www.grammarly.com" target="_blank" rel="noopener" style="color:var(--primary); font-weight:600; font-size:.85rem;">🔗 grammarly.com</a> &nbsp;·&nbsp; <a href="https://quillbot.com" target="_blank" rel="noopener" style="color:var(--primary); font-weight:600; font-size:.85rem;">🔗 quillbot.com</a></p>
+  <p class="lede">Two tools, two different jobs — Grammarly checks, QuillBot rewrites. Both have usable free plans.</p>
+  <div class="grid2">
+    <div class="card">
+      <h4>Grammarly — Grammar &amp; Tone Check</h4>
+      <p style="font-size:.92rem; line-height:1.7; margin-bottom:10px;">Catches grammar, spelling, and punctuation errors, and flags tone issues (e.g. does this sentence read as too informal for a journal submission?).</p>
+      <p style="font-size:.85rem; opacity:.75;"><strong>Free plan:</strong> grammar, spelling, and basic tone detection, plus 100 AI prompts/month. Full-sentence rewrites and plagiarism check require a paid plan.</p>
+    </div>
+    <div class="card">
+      <h4>QuillBot — Rewrite &amp; Paraphrase</h4>
+      <p style="font-size:.92rem; line-height:1.7; margin-bottom:10px;">Rewrites a sentence or paragraph in a different style or tone — useful for smoothing awkward phrasing once the grammar is already correct.</p>
+      <p style="font-size:.85rem; opacity:.75;"><strong>Free plan:</strong> grammar check, summarizer (up to 1,200 words), citation generator, and translator are all free. The Paraphraser itself is capped at 125 words per request on the free plan — fine for one sentence at a time, awkward for a full paragraph.</p>
+    </div>
+  </div>
+  <div class="tip-box" style="margin-top:16px;">
+    <h4>Suggested Order</h4>
+    <p>Run Grammarly first to fix mechanical errors, then paste any remaining awkward sentences into QuillBot's Paraphraser one at a time to smooth the phrasing.</p>
+  </div>
+  <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Research Track · Manuscript Polish</span></footer>
   `
 });
 
 /* 6. Ask Gemini */
 slides.push({
-  title:"B-1 | Ask Gemini",
+  title:"T-1 | Ask Gemini",
   html:`
-  <div class="badge">GROUP B | QUICK PREP</div>
+  <div class="badge accent">TEACHING TRACK | QUICK PREP</div>
   <h2 class="title">💬 Ask Gemini Right in Chrome</h2>
+  <p style="margin:-6px 0 12px;"><a href="https://gemini.google.com/overview/gemini-in-chrome/" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600; font-size:.85rem;">🔗 gemini.google.com/overview/gemini-in-chrome</a></p>
   <p class="lede">While reading a webpage, watching a video, or opening a PDF, skip the copy-paste — just ask Gemini in the browser's side panel to summarize, translate, or pull out key points. Useful the moment you need it while prepping a lesson.</p>
   <div class="grid2">
     <div class="card">
@@ -482,9 +997,9 @@ slides.push({
 
 /* 4b. Ask Gemini — Example & Demo */
 slides.push({
-  title:"B-1 | Ask Gemini — Example & Demo",
+  title:"T-1 | Ask Gemini — Example & Demo",
   html:`
-  <div class="badge">GROUP B | QUICK PREP</div>
+  <div class="badge accent">TEACHING TRACK | QUICK PREP</div>
   <h2 class="title">💬 Ask Gemini — Example &amp; Live Demo</h2>
   <p class="lede">Putting it into practice: a teaching example, a ready-to-use prompt, and a live recording of the actual workflow.</p>
   <div class="grid2">
@@ -506,10 +1021,11 @@ slides.push({
 
 /* 5. Nano Banana */
 slides.push({
-  title:"B-2 | Nano Banana",
+  title:"T-2 | Nano Banana",
   html:`
-  <div class="badge">GROUP B | QUICK PREP</div>
+  <div class="badge accent">TEACHING TRACK | QUICK PREP</div>
   <h2 class="title">🎨 Generate Infographics With Accurate Text, Using AI</h2>
+  <p style="margin:-6px 0 12px;"><a href="https://gemini.google.com" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600; font-size:.85rem;">🔗 gemini.google.com</a></p>
   <p class="lede">Gemini's Nano Banana Pro model can produce complete, accurate text directly inside generated images, so patient education handouts and posters come out finished the first time, no manual text fixes needed.</p>
   <div class="grid2">
     <div class="card">
@@ -549,10 +1065,11 @@ slides.push({
 
 /* 5b. Canva Magic Layers */
 slides.push({
-  title:"B-2b | Fixing Typos with Canva Magic Layers",
+  title:"T-2b | Fixing Typos with Canva Magic Layers",
   html:`
-  <div class="badge">GROUP A | ADVANCED TIP</div>
+  <div class="badge accent">TEACHING TRACK | ADVANCED TIP</div>
   <h2 class="title">🛠️ Got a Typo? Fix It Without Regenerating</h2>
+  <p style="margin:-6px 0 12px;"><a href="https://www.canva.com" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600; font-size:.85rem;">🔗 canva.com</a></p>
   <p class="lede">If an AI-generated poster is 90% right but has a typo, wrong date, or off-brand color, you don't need to re-roll the whole image. Canva's Magic Layers tool splits a flat image into editable text, graphics, and background layers — works with output from Gemini, ChatGPT, or Canva's own AI.</p>
   <div class="grid2">
     <div class="card">
@@ -583,10 +1100,11 @@ slides.push({
 
 /* 8b. Storybook */
 slides.push({
-  title:"B-3 | Gemini Storybook",
+  title:"T-3 | Gemini Storybook",
   html:`
-  <div class="badge">GROUP B | QUICK PREP</div>
+  <div class="badge accent">TEACHING TRACK | QUICK PREP</div>
   <h2 class="title">📖 Turn a Prompt Into an Illustrated Storybook</h2>
+  <p style="margin:-6px 0 12px;"><a href="https://gemini.google.com" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600; font-size:.85rem;">🔗 gemini.google.com</a></p>
   <p class="lede">Storybook is a Gemini Gem (a pre-built assistant inside the Gemini app) that turns a short prompt into a 10-page illustrated story with read-aloud narration.</p>
   <div class="grid2">
     <div class="card">
@@ -614,10 +1132,11 @@ slides.push({
 
 /* 9. Gemini Canvas intro */
 slides.push({
-  title:"C-1 | Gemini Canvas Overview",
+  title:"T-4 | Gemini Canvas Overview",
   html:`
-  <div class="badge accent">GROUP C | INTERACTIVE MATERIALS</div>
+  <div class="badge accent">TEACHING TRACK | INTERACTIVE MATERIALS</div>
   <h2 class="title">🎮 Building Interactive Web Pages With Gemini Canvas</h2>
+  <p style="margin:-6px 0 12px;"><a href="https://gemini.google.com" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600; font-size:.85rem;">🔗 gemini.google.com</a></p>
   <p class="lede">Gemini Canvas turns text prompts into interactive web pages you can preview and edit live — the next two pages are teaching tools built this way.</p>
   <div class="card" style="max-width:640px;">
     <h4>How To</h4>
@@ -634,10 +1153,10 @@ slides.push({
 
 /* 10. IVD lottery demo */
 slides.push({
-  title:"C-2 | IVD Lottery System Demo",
+  title:"T-5 | IVD Lottery System Demo",
   isDemo:true,
   html:`
-  <div class="badge accent">GROUP C | CASE STUDY</div>
+  <div class="badge accent">TEACHING TRACK | CASE STUDY</div>
   <h2 class="title" style="font-size:1.9rem; margin-bottom:14px;">🎲 Skills-Check Medication Order Lottery System</h2>
   <p class="lede" style="margin-bottom:14px;">A randomized IVD medication-administration scenario: draws a random combination of drug, diluent, infusion time, and follow-up action, and simultaneously draws which student is tested and which grades — replacing manual drawing of lots.</p>
   <div class="iframe-wrap"><iframe src="ivd-lottery.html"></iframe></div>
@@ -647,10 +1166,10 @@ slides.push({
 
 /* 11. admission roleplay demo */
 slides.push({
-  title:"C-3 | Admission Roleplay Demo",
+  title:"T-6 | Admission Roleplay Demo",
   isDemo:true,
   html:`
-  <div class="badge accent">GROUP C | CASE STUDY</div>
+  <div class="badge accent">TEACHING TRACK | CASE STUDY</div>
   <h2 class="title" style="font-size:1.9rem; margin-bottom:14px;">🎭 Patient Roleplay Script Generator</h2>
   <p class="lede" style="margin-bottom:14px;">An OSCE admission-assessment simulation: one click generates a complete patient script — persona, presentation cues, pain assessment, and history — so students can take turns practicing an admission nursing assessment interview.</p>
   <div class="iframe-wrap"><iframe src="admission-roleplay.html"></iframe></div>
@@ -663,17 +1182,27 @@ slides.push({
   title:"Integrated Workflow",
   html:`
   <div class="eyebrow">Putting It Together</div>
-  <h2 class="title">How these Tools Connect</h2>
-  <p class="lede">Looking at each tool alone can feel piecemeal — strung together, they form a complete workflow from prep to materials to practice to interaction.</p>
-  ${pulseSVG(1400)}
-  <div class="grid3" style="margin-top:6px;">
-    <div class="card"><h4>① Verify & Organize</h4><p>Perplexity checks literature and evidence levels → NotebookLM organizes it into a Q&A knowledge base and generates a mind map</p></div>
-    <div class="card"><h4>② Build Materials</h4><p>Nano Banana turns it into a patient-education poster or teaching graphic → Ask Gemini proofreads and double-checks the facts</p></div>
-    <div class="card"><h4>③ Interactive Practice</h4><p>Gemini Canvas turns it into an interactive tool or simulation game students can practice with directly</p></div>
+  <h2 class="title">How These Tools Connect</h2>
+  <p class="lede">Looking at each tool alone can feel piecemeal — strung together, each track forms a complete workflow.</p>
+  <div class="card" style="margin-top:6px; border-left:4px solid var(--gold);">
+    <h4 style="color:var(--gold);">Research Track</h4>
+    <div class="grid3" style="margin-top:10px;">
+      <div class="card"><h4>① Ask &amp; Acquire</h4><p>PICO sharpens a vague concern into a searchable question → Perplexity, Elicit, and Consensus each search it from a different angle</p></div>
+      <div class="card"><h4>② Organize &amp; Analyze</h4><p>NotebookLM turns everything found into a cited knowledge base → Claude runs statistics and renders charts on your own data</p></div>
+      <div class="card"><h4>③ Polish</h4><p>Grammarly and QuillBot clean up the grammar and phrasing before submission</p></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px; border-left:4px solid var(--accent);">
+    <h4 style="color:var(--accent);">Teaching Track</h4>
+    <div class="grid3" style="margin-top:10px;">
+      <div class="card"><h4>① Verify &amp; Organize</h4><p>Perplexity checks literature and evidence levels → NotebookLM organizes it into a Q&A knowledge base and generates a mind map</p></div>
+      <div class="card"><h4>② Build Materials</h4><p>Nano Banana turns it into a patient-education poster or teaching graphic → Ask Gemini proofreads and double-checks the facts</p></div>
+      <div class="card"><h4>③ Interactive Practice</h4><p>Gemini Canvas turns it into an interactive tool or simulation game students can practice with directly</p></div>
+    </div>
   </div>
   <div class="tip-box">
     <h4>💡 Key Takeaway</h4>
-    <p>These tools are aids — the order can flex depending on the course. What matters is deciding first whether a class needs more source material, more finished teaching materials, or more interactive practice, then picking the right tool — not forcing every tool into every workflow.</p>
+    <p>These tools are aids — the order can flex depending on the project. What matters is deciding first what you actually need (evidence, organized notes, analysis, polish, or teaching materials), then picking the right tool — not forcing every tool into every workflow.</p>
   </div>
   <footer class="speaker"><span>${SPEAKER_NAME}</span><span>Integrated Workflow</span></footer>
   `
@@ -714,19 +1243,26 @@ slides.push({
 
 /* 14. Q&A */
 slides.push({
-  title:"Q&A · Resources",
+  title:"Q&A · Contact",
   html:`
   <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
     <div class="eyebrow">Finally</div>
-    <h2 class="title" style="font-size:2.8rem;">Q&amp;A</h2>
-    <p class="lede" style="font-size:1.15rem;">Thank you for listening. Happy to discuss any practical questions about using them.</p>
-    <div class="grid3" style="margin-top:10px;">
-      <div class="card"><h4>🔍 Perplexity</h4><p>perplexity.ai — the free tier has a daily limit on Pro Search</p></div>
-      <div class="card"><h4>📚 NotebookLM</h4><p>notebooklm.google.com — free to use</p></div>
-      <div class="card"><h4>💬 Ask Gemini</h4><p>Built into Chrome's side panel, free to use</p></div>
-      <div class="card"><h4>🎨 Nano Banana</h4><p>Gemini's "Create image" — the Pro model renders text more accurately</p></div>
-      <div class="card"><h4>📖 Gemini Storybook</h4><p>Gems → Storybook in gemini.google.com — free to use, requires being signed in and 18+</p></div>
-      <div class="card"><h4>🎮 Gemini Canvas</h4><p>Select Canvas in the Gemini prompt box — free tier allows one webpage generation per conversation</p></div>
+    <h2 class="title" style="font-size:2.4rem;">Q&amp;A</h2>
+    <p class="lede">Thank you for listening. Happy to discuss any practical questions about using them.</p>
+    <div class="card" style="margin-top:60px; background:var(--primary-soft); border:none; position:relative; overflow:visible;">
+      <div style="display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap;">
+        <img src="speaker-photo.png" alt="Speaker portrait" style="width:150px; height:150px; border-radius:50%; object-fit:cover; object-position:top; border:4px solid var(--paper); box-shadow:0 4px 14px rgba(0,0,0,.15); flex-shrink:0; margin-top:-60px;">
+        <div style="flex:1; min-width:240px;">
+          <h4>About the Speaker</h4>
+          <p style="font-size:1rem; line-height:1.8;">
+            <strong>${SPEAKER_NAME}</strong><br>
+            Assistant Professor, Department of Nursing, National Tainan Junior College of Nursing<br>
+            📧 <a href="mailto:hsinyu@ntin.edu.tw" style="color:var(--primary); font-weight:600;">hsinyu@ntin.edu.tw</a>
+          </p>
+        </div>
+      </div>
+      <p style="font-size:.95rem; line-height:1.7; margin-top:10px;"><strong>Research interests:</strong> Cardiovascular nursing, sleep medicine, digital health, quality of life, social support</p>
+      <p style="font-size:.95rem; line-height:1.7; margin-top:10px;">Always happy to hear from anyone interested in collaboration — feel free to reach out by email.</p>
     </div>
   </div>
   <footer class="speaker"><span>Speaker: ${SPEAKER_NAME}</span><span>※ Tools update quickly — actual features may vary on the day</span></footer>
@@ -783,6 +1319,19 @@ function copyPrompt(btn){
     btn.textContent = 'Copied';
     setTimeout(()=>btn.textContent = old, 1500);
   });
+}
+function ebpStep(el, name, num, desc, color){
+  document.querySelectorAll('.ebp-step circle').forEach(c=>{
+    c.setAttribute('stroke-width','3');
+    c.style.filter = '';
+  });
+  el.querySelector('circle').style.filter = 'drop-shadow(0 0 6px rgba(0,0,0,.25))';
+  el.querySelector('circle').setAttribute('stroke-width','5');
+  const detail = document.getElementById('ebp-detail');
+  if(detail){
+    detail.style.borderLeftColor = color;
+    detail.innerHTML = '<h4 style="color:'+color+';">'+num+' '+name+'</h4><p>'+desc+'</p>';
+  }
 }
 render();
 </script>
