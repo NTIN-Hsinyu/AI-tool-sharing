@@ -254,6 +254,7 @@ footer.speaker{
   .cover-title{font-size:2.4rem;}
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -310,6 +311,10 @@ slides.push({
         Teaching Track
       </span>
     </div>
+  </div>
+  <div style="position:absolute; right:88px; bottom:70px; text-align:center;">
+    <div id="cover-qr" style="display:inline-block; padding:10px; background:#fff; border-radius:12px; box-shadow:0 2px 14px rgba(14,71,73,.12);"></div>
+    <p style="margin-top:8px; font-size:.78rem; color:var(--ink-soft); max-width:150px;">Scan to access today's slides</p>
   </div>
   <footer class="speaker"><span>Speaker: ${SPEAKER_NAME}</span><span>※ Tools update quickly — live demo reflects the interface on the day</span></footer>
   `
@@ -1280,6 +1285,17 @@ slides.forEach((s,i)=>{
   sec.innerHTML = s.html;
   deck.appendChild(sec);
 });
+
+if(typeof QRCode !== 'undefined' && document.getElementById('cover-qr')){
+  new QRCode(document.getElementById('cover-qr'), {
+    text: "https://ntin-hsinyu.github.io/AI-tool-sharing/",
+    width: 130,
+    height: 130,
+    colorDark: "#0E4749",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.M
+  });
+}
 
 let tocHtml = '<h3>Contents</h3>';
 slides.forEach((s,i)=>{
